@@ -1,0 +1,29 @@
+#https://www.vvic.com/item/673078
+#https://www.vvic.com/item/2656524
+#https://www.vvic.com/item/3718281
+#https://www.vvic.com/item/3733488
+#https://www.vvic.com/item/1310624
+#https://www.vvic.com/item/5669615
+#https://www.vvic.com/item/4772834
+#https://www.vvic.com/item/3967570
+#https://www.vvic.com/item/5399709
+#https://www.vvic.com/item/5669615
+#https://www.vvic.com/item/4837111
+
+#查找的商品已删除 
+#https://www.vvic.com/item/67307
+#找不到页面
+#https://www.vvic.com/item/772834
+
+# search index webpage
+#https://www.vvic.com/gz/list/index.html
+
+# website index webpage
+#http://www.vvic.com
+
+# shop url
+https://www.vvic.com/shop/39635
+https://www.vvic.com/shop/18164
+
+# market of market url
+#https://www.vvic.com/gz/shops/19

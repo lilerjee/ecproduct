@@ -1,0 +1,12 @@
+**/*.xls
+**/*.xlsx
+**/*.log
+**/proxylist/**
+**/*.pyc
+**/__pycache__/**
+**/docs/_build/**
+**/docs/.ipynb_checkpoints/
+output/
+
+
+

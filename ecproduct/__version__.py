@@ -1,0 +1,7 @@
+__title__ = 'ecproduct'
+__description__ = 'Spiders system for Electronic Commerce System'
+__version__ = '1.0'
+__author__ = 'Liler Jee'
+__author_email__ = 'lilerjee@protonmail.com'
+__license__ = 'MIT'
+__copyright__ = 'Copyright 2020 Liler Jee'

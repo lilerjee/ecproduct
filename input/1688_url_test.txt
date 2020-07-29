@@ -1,0 +1,18 @@
+# unshelf product
+#https://detail.1688.com/offer/543884257260.html
+
+
+#product which has three price range:
+https://detail.1688.com/offer/544560773525.html
+https://detail.1688.com/offer/555569161363.html
+
+#product which has three price and discount price range:
+#https://detail.1688.com/offer/539065306832.html
+
+#product which has only one price range:
+#https://detail.1688.com/offer/40976180711.html
+#https://detail.1688.com/offer/543218337857.html
+
+# search index 
+#https://s.1688.com/selloffer/offer_search.htm
+#https://www.baidu.com

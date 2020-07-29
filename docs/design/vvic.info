@@ -1,0 +1,51 @@
+vvic商品详情页面信息：
+    商品信息：
+        商品名字: product_name
+        商品链接: product_url
+        商品ID:   
+            本网站商品ID: product_id
+            链接网站对应商品ID: product_link_id
+        商品价格: 
+            商品原有价格: product_original_price
+            商品卖出价格: product_sale_price
+            商品范围价格: product_range_price
+            商品价格单位: product_price_unit
+            链接网站对应商品价格: product_price
+            商品折扣价格: product_discount_price
+
+        商品属性：
+            颜色: product_color
+                颜色名字: product_color_name
+                颜色ID: product_color_id
+            尺码: size
+                尺码名字: product_size_name
+                尺码ID: product_size_id
+            数量: product_quantity
+            属性组合ID: product_sku_id
+        商品图片:
+            图片链接: product_img_url
+                索引图片链接: product_index_img_url
+        商品类别: product_category
+        商品上新时间: product_upload_time
+
+
+
+    店铺信息：
+        店铺名称: store_name
+        店铺ID: store_id
+        店铺链接: store_url
+        店铺排行: store_rank
+        店铺商品数量: store_product_num
+        店铺卖家信息：
+            卖家名字: store_seller_name 
+            卖家联系方式：
+                卖家电话: store_seller_phone
+                卖家微信: store_seller_wechat
+                卖家QQ: store_seller_qq
+            卖家地址: store_seller_addr
+
+    商家信息:
+        商家ID: merchant_id
+        
+
+

@@ -1,0 +1,17 @@
+# unshelf
+#https://item.jd.com/14404156769.html#crumb-wrap
+#https://item.jd.com/14404156772.html#crumb-wrap
+#https://item.jd.com/14404156773.html#crumb-wrap
+
+# onshelf
+#https://item.jd.com/5396295.html
+#https://item.jd.com/3778040.html
+#https://item.jd.com/4620941.html
+#https://item.jd.com/7229776.html
+#https://item.jd.com/6961413.html
+
+# category
+#https://www.jd.com/allSort.aspx
+
+# Search page
+https://search.jd.com/Search
