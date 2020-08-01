@@ -1,0 +1,1269 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ecproduct.spiders.vvic &mdash; ECProduct 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> ECProduct
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/design.html">Design of Product</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../config.html">Configration of ECProduct</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/user.html">User Guide of ECProduct</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tool/tool.html">Tools used for ECProduct</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/api.html">Developer Interface</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ECProduct</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>ecproduct.spiders.vvic</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for ecproduct.spiders.vvic</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">* **Market type** of vvic.com:</span>
+<span class="sd">    #. **website** - https://www.vvic.com</span>
+<span class="sd">    #. **city** - https://www.vvic.com/gz</span>
+<span class="sd">    #. **mall** - https://www.vvic.com/gz/shops/19</span>
+<span class="sd">    #. **floor** - http://www.vvic.com/hz/shops/516#1</span>
+<span class="sd">    #. **shop** - https://www.vvic.com/shop/42780</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
+<span class="kn">import</span> <span class="nn">scrapy</span>
+<span class="kn">from</span> <span class="nn">ecproduct.items</span> <span class="kn">import</span> <span class="n">ProductPage</span><span class="p">,</span> <span class="n">MarketPage</span>
+<span class="kn">from</span> <span class="nn">ecproduct.items</span> <span class="kn">import</span> <span class="n">IndexPage</span><span class="p">,</span> <span class="n">SearchPage</span><span class="p">,</span> <span class="n">ContactPage</span>
+<span class="kn">from</span> <span class="nn">scrapy.loader</span> <span class="kn">import</span> <span class="n">ItemLoader</span>
+<span class="kn">from</span> <span class="nn">scrapy.loader.processors</span> <span class="kn">import</span> <span class="n">TakeFirst</span><span class="p">,</span> <span class="n">Compose</span>
+<span class="kn">from</span> <span class="nn">scrapy.http.response</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">ecproduct.spiders.ecproduct</span> <span class="kn">import</span> <span class="n">EcproductSpider</span>
+<span class="kn">from</span> <span class="nn">scrapy.spidermiddlewares.httperror</span> <span class="kn">import</span> <span class="n">HttpError</span>
+<span class="kn">from</span> <span class="nn">twisted.internet.error</span> <span class="kn">import</span> <span class="n">DNSLookupError</span>
+<span class="kn">from</span> <span class="nn">twisted.internet.error</span> <span class="kn">import</span> <span class="ne">TimeoutError</span><span class="p">,</span> <span class="n">TCPTimedOutError</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">quote</span>
+<span class="c1"># from log import Log</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="c1">#  from debug import debugger</span>
+
+
+<div class="viewcode-block" id="VvicSpider"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.vvic.VvicSpider">[docs]</a><span class="k">class</span> <span class="nc">VvicSpider</span><span class="p">(</span><span class="n">EcproductSpider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;vvic&#39;</span>
+    <span class="n">allowed_domains</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;vvic.com&#39;</span><span class="p">]</span>
+    <span class="c1"># start_urls = [&#39;http://vvic.com/&#39;]</span>
+    <span class="c1"># handle_httpstatus_list = [301, 302]</span>
+
+    <span class="n">project_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)))</span>
+    <span class="n">this_file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">custom_settings</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1">#  &#39;FEED_URI&#39;: (</span>
+        <span class="c1">#      &#39;file:///&#39; + project_path + os.path.sep +</span>
+        <span class="c1">#      &#39;output&#39; + os.path.sep + this_file_name + &#39;.jl&#39;),</span>
+        <span class="c1">#  &#39;FEED_EXPORT_ENCODING&#39;: &#39;utf-8&#39;,</span>
+        <span class="c1">#  &#39;FEED_EXPORT_ENCODING&#39;: &#39;gb2312&#39;,</span>
+        <span class="c1">#  &#39;FEED_FORMAT&#39;: &#39;csv&#39;,</span>
+        <span class="c1">#  &#39;FEED_FORMAT&#39;: &#39;jsonlines&#39;,</span>
+        <span class="c1">#  &#39;FEED_EXPORT_FIELDS&#39;: [&#39;product_color_id&#39;, &#39;product_color_name&#39;,</span>
+        <span class="c1">#                         &#39;product_id&#39;, &#39;product_index_img_url&#39;,</span>
+        <span class="c1">#                         &#39;product_source_id&#39;, &#39;product_link_price&#39;],</span>
+
+        <span class="s1">&#39;LOG_ENABLED&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;LOG_ENCODING&#39;</span><span class="p">:</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">,</span>
+        <span class="c1"># &#39;LOG_FILE&#39;: &#39;ecproduct.log&#39;,</span>
+        <span class="s1">&#39;LOG_FILE&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">project_path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s1">&#39;log&#39;</span> <span class="o">+</span>
+                     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">this_file_name</span> <span class="o">+</span> <span class="s1">&#39;.log&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;LOG_FORMAT&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> [</span><span class="si">%(name)s</span><span class="s1">] </span><span class="si">%(levelname)s</span><span class="s1">: </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;LOG_LEVEL&#39;</span><span class="p">:</span> <span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span>
+        <span class="c1"># &#39;LOG_LEVEL&#39;: &#39;INFO&#39;,</span>
+        <span class="s1">&#39;LOG_STDOUT&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">platform_code</span> <span class="o">=</span> <span class="s1">&#39;VC001&#39;</span>
+
+<div class="viewcode-block" id="VvicSpider.__init__"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.vvic.VvicSpider.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">entrance_page</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span>
+                 <span class="n">home_item_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">platform_code</span><span class="o">=</span><span class="n">platform_code</span><span class="p">,</span> <span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                 <span class="n">item_num</span><span class="o">=</span><span class="s1">&#39;100&#39;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s1">&#39;gz&#39;</span><span class="p">):</span>
+
+        <span class="n">EcproductSpider</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">entrance_page</span><span class="o">=</span><span class="n">entrance_page</span><span class="p">,</span>
+            <span class="n">data_type</span><span class="o">=</span><span class="n">data_type</span><span class="p">,</span> <span class="n">home_item_id</span><span class="o">=</span><span class="n">home_item_id</span><span class="p">,</span>
+            <span class="n">platform_code</span><span class="o">=</span><span class="n">platform_code</span><span class="p">,</span> <span class="n">keyword</span><span class="o">=</span><span class="n">keyword</span><span class="p">,</span>
+            <span class="n">item_num</span><span class="o">=</span><span class="n">item_num</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="n">city</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="VvicSpider.start_requests"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.vvic.VvicSpider.start_requests">[docs]</a>    <span class="k">def</span> <span class="nf">start_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">EcproductSpider</span><span class="o">.</span><span class="n">start_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="VvicSpider.parse_product_from_product_page"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_product_from_product_page">[docs]</a>    <span class="k">def</span> <span class="nf">parse_product_from_product_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse product detail page to get product info.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span>
+        <span class="n">loader</span> <span class="o">=</span> <span class="n">ItemLoader</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">ProductPage</span><span class="p">(),</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+
+        <span class="c1"># determine if the spider is banned by website</span>
+        <span class="n">match_url</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
+            <span class="s1">&#39;https?://[A-Za-z0-9\-]+\.vvic\.com/item/\d+&#39;</span>
+            <span class="s1">&#39;|https?://[A-Za-z0-9\-]+\.vvic\.com/item\.html?\?uuid=\d+&#39;</span><span class="p">,</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">match_url</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s1">&#39;original url: </span><span class="si">%s</span><span class="s1">, response url: </span><span class="si">%s</span><span class="s1">&#39;</span>
+                <span class="o">%</span> <span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">],</span> <span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;home_item_id&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;home_item_id&#39;</span><span class="p">])</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;product_id&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">re</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;(\d+)&#39;</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_status&#39;</span><span class="p">,</span> <span class="s1">&#39;cannot access&#39;</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_item</span><span class="p">()</span>
+
+        <span class="c1"># plaftform info</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;platform_code&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">])</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;product_category_id&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;category_id&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+
+        <span class="c1"># determin whether the product is deleted, or if the webpage is found</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div.error-main &gt; div.error-404 &gt; h1::text&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">error_text</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">error_text</span> <span class="o">==</span> <span class="s1">&#39;查找的商品已删除&#39;</span><span class="p">:</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                    <span class="s1">&#39;product_id&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+                    <span class="n">Compose</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">re</span><span class="o">=</span><span class="s1">&#39;(\d+)&#39;</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_url&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_status&#39;</span><span class="p">,</span> <span class="s1">&#39;deleted&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">error_text</span> <span class="o">==</span> <span class="s1">&#39;找不到页面&#39;</span><span class="p">:</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                    <span class="s1">&#39;product_id&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+                    <span class="n">Compose</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">re</span><span class="o">=</span><span class="s1">&#39;(\d+)&#39;</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_url&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_status&#39;</span><span class="p">,</span> <span class="s1">&#39;nonexistent&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;other error happened: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">error_text</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_product_info</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_attribute_info</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_img_info</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_sku_info</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_shop_info</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+
+        <span class="c1"># extra field</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;created_time&#39;</span><span class="p">,</span>
+            <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span>
+                                       <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_item</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_product_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="c1"># product info</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_url&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="c1"># product url &#39;^https?://([A-Za-z0-9\-]+\.)+vvic\.com/item/(\d+)$&#39;)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;product_id&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+            <span class="n">Compose</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">re</span><span class="o">=</span><span class="s1">&#39;(\d+)&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_css</span><span class="p">(</span>
+            <span class="s1">&#39;product_name&#39;</span><span class="p">,</span> <span class="s1">&#39;div.product-detail div.d-name strong::text&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_css</span><span class="p">(</span>
+            <span class="s1">&#39;product_sale_price&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;div.v-price.d-p div.p-value span.fl strong.d-sale::text&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_price_unit&#39;</span><span class="p">,</span> <span class="s1">&#39;CNY&#39;</span><span class="p">)</span>
+
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_css</span><span class="p">(</span>
+            <span class="s1">&#39;product_source_url&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;div.product-detail div.d-name a::attr(href)&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;product_source_id&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">=</span><span class="s2">&quot;_TID = &#39;(\d+)&#39;;&quot;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_css</span><span class="p">(</span>
+            <span class="s1">&#39;product_source_price&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;div.v-price &gt; div.p-value &gt; span.d-sale::text&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_source_price_unit&#39;</span><span class="p">,</span> <span class="s1">&#39;CNY&#39;</span><span class="p">)</span>
+
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;product_img_index_url&#39;</span><span class="p">,</span>
+            <span class="n">urljoin</span><span class="p">(</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">],</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">loader</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+                    <span class="n">TakeFirst</span><span class="p">(),</span> <span class="n">re</span><span class="o">=</span><span class="s2">&quot;_INDEXIMGURL = &#39;(.*)&#39;;&quot;</span><span class="p">))))</span>
+
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div.product-detail dl.summary dd&#39;</span><span class="p">):</span>
+            <span class="c1"># debugger.print(s)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div.name::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span> <span class="ow">and</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div.name::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span>
+                    <span class="s1">&#39;货号&#39;</span><span class="p">):</span>
+                    <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                        <span class="s1">&#39;product_art_no&#39;</span><span class="p">,</span>
+                        <span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div.value.ff-arial::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">(),</span>
+                        <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div.name::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span> <span class="ow">and</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div.name::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;上新时间&#39;</span><span class="p">):</span>
+                    <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                        <span class="s1">&#39;product_upload_time&#39;</span><span class="p">,</span>
+                        <span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div.value.ff-arial::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">(),</span>
+                        <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+                        <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">19</span> <span class="k">else</span> <span class="n">v</span> <span class="o">+</span> <span class="s1">&#39;:00&#39;</span><span class="p">,</span>
+                        <span class="n">re</span><span class="o">=</span><span class="s1">&#39;(\d</span><span class="si">{4}</span><span class="s1">-\d</span><span class="si">{2}</span><span class="s1">-\d</span><span class="si">{2}</span><span class="s1">\s\d</span><span class="si">{2}</span><span class="s1">:\d</span><span class="si">{2}</span><span class="s1">)&#39;</span><span class="p">)</span>
+
+        <span class="n">unshelf_time</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_css</span><span class="p">(</span>
+            <span class="s1">&#39;div.sold-info::text&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">=</span><span class="s1">&#39;(\d</span><span class="si">{4}</span><span class="s1">-\d</span><span class="si">{2}</span><span class="s1">-\d</span><span class="si">{2}</span><span class="s1">\s\d</span><span class="si">{2}</span><span class="s1">:\d</span><span class="si">{2}</span><span class="s1">)&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unshelf_time</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;product_unshelf_time&#39;</span><span class="p">,</span> <span class="n">unshelf_time</span><span class="p">,</span>
+                <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+                <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">19</span> <span class="k">else</span> <span class="n">v</span> <span class="o">+</span> <span class="s1">&#39;:00&#39;</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_status&#39;</span><span class="p">,</span> <span class="s1">&#39;unshelf&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_status&#39;</span><span class="p">,</span> <span class="s1">&#39;onshelf&#39;</span><span class="p">)</span>
+        <span class="c1">#  loader.add_xpath(&#39;product_unshelf_time&#39;,</span>
+        <span class="c1">#                   &#39;//div[@class=&quot;sold-info&quot;]/text()&#39;,</span>
+        <span class="c1">#                   re=&#39;(\d{4}-\d{2}-\d{2}\s\d{2}:\d{2})&#39;)</span>
+
+        <span class="c1"># get product details</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div.d-attr.clearfix &gt; ul &gt; li&#39;</span><span class="p">):</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;product_detail&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+                <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\xa0</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_get_attribute_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="c1"># attribute info</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;attr_name&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;_(COLOR)\s*=\s*&#39;.*&#39;\s*;&quot;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;attr_value_id&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)],</span> <span class="n">re</span><span class="o">=</span><span class="s2">&quot;_COLORID = &#39;(.*)&#39;;&quot;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;attr_value&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)],</span> <span class="n">re</span><span class="o">=</span><span class="s2">&quot;_COLOR = &#39;(.*)&#39;;&quot;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;attr_name&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+            <span class="n">re</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;_(SIZE)\s*=\s*&#39;.*&#39;\s*;&quot;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;attr_value_id&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)],</span> <span class="n">re</span><span class="o">=</span><span class="s2">&quot;_SIZEID = &#39;(.*)&#39;;&quot;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;attr_value&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)],</span> <span class="n">re</span><span class="o">=</span><span class="s2">&quot;_SIZE = &#39;(.*)&#39;;&quot;</span><span class="p">)</span>
+        <span class="c1">#  loader.add_css(</span>
+        <span class="c1">#      &#39;product_upload_time&#39;,</span>
+        <span class="c1">#      &#39;dl.summary.clearfix dd:last-child div.value.ff-arial::text&#39;,</span>
+        <span class="c1">#      Compose(lambda v: v[0].strip()))</span>
+
+    <span class="k">def</span> <span class="nf">_get_img_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="c1"># image info</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;ul#thumblist &gt; li&#39;</span><span class="p">):</span>
+            <span class="n">small_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">],</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div &gt; a &gt; img::attr(src)&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+            <span class="n">mid_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">],</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div &gt; a &gt; img::attr(mid)&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+            <span class="n">big_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">],</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div &gt; a &gt; img::attr(big)&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_url&#39;</span><span class="p">,</span> <span class="n">small_url</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_url&#39;</span><span class="p">,</span> <span class="n">mid_url</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_url&#39;</span><span class="p">,</span> <span class="n">big_url</span><span class="p">)</span>
+            <span class="c1"># for images pipeline</span>
+            <span class="c1"># loader.add_value(&#39;image_urls&#39;, big_url)</span>
+            <span class="c1"># https://img.alicdn.com/bao/uploaded/i4/3164746790/TB2faCjrrGYBuNjy0FoXXciBFXa_!!3164746790.jpg_60x60.jpg</span>
+            <span class="c1"># https://img1.vvic.com/upload/1522943484301_494356.jpg?x-oss-process=image/resize,mfit,h_500,w_500</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_size&#39;</span><span class="p">,</span> <span class="n">small_url</span><span class="p">,</span> <span class="n">re</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;_(\d+[xX]\d+)\.&#39;</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_size&#39;</span><span class="p">,</span> <span class="n">mid_url</span><span class="p">,</span> <span class="n">re</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;_(\d+[xX]\d+)\.&#39;</span><span class="p">)</span>
+            <span class="n">small_url_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;h_(\d+),w_(\d+)&#39;</span><span class="p">,</span> <span class="n">small_url</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">small_url_match</span><span class="p">:</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_size&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">small_url_match</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">mid_url_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;h_(\d+),w_(\d+)&#39;</span><span class="p">,</span> <span class="n">mid_url</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mid_url_match</span><span class="p">:</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_size&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mid_url_match</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_size&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="c1"># loader.add_value(&#39;status&#39;, &#39;0&#39;)</span>
+            <span class="c1"># loader.add_value(&#39;status&#39;, &#39;0&#39;)</span>
+            <span class="c1"># loader.add_value(&#39;status&#39;, &#39;0&#39;)</span>
+            <span class="k">if</span> <span class="n">small_url</span> <span class="ow">in</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_output_value</span><span class="p">(</span><span class="s1">&#39;product_img_index_url&#39;</span><span class="p">):</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_purpose&#39;</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_purpose&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mid_url</span> <span class="ow">in</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_output_value</span><span class="p">(</span><span class="s1">&#39;product_img_index_url&#39;</span><span class="p">):</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_purpose&#39;</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_purpose&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">big_url</span> <span class="ow">in</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_output_value</span><span class="p">(</span><span class="s1">&#39;product_img_index_url&#39;</span><span class="p">):</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_purpose&#39;</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_purpose&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_description&#39;</span><span class="p">,</span> <span class="s1">&#39;small&#39;</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_description&#39;</span><span class="p">,</span> <span class="s1">&#39;middle&#39;</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_description&#39;</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_sku_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="c1"># get sku</span>
+        <span class="n">skumap</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">TakeFirst</span><span class="p">(),</span>
+            <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">re</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;_SKUMAP\s+=\s+&#39;(.*)&#39;;&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">skumap</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;sku_id&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">sku</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;sku_value&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">sku</span><span class="p">[</span><span class="s1">&#39;skuid&#39;</span><span class="p">]))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;sku_price&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">sku</span><span class="p">[</span><span class="s1">&#39;discount_price&#39;</span><span class="p">]))</span>
+
+    <span class="k">def</span> <span class="nf">_get_shop_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="c1"># shop info</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_id&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">=</span><span class="s2">&quot;_SHOPID = &#39;(\d+)&#39;;&quot;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_type&#39;</span><span class="p">,</span> <span class="s1">&#39;shop&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;market_url&#39;</span><span class="p">,</span>
+            <span class="n">urljoin</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">],</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">loader</span><span class="o">.</span><span class="n">get_css</span><span class="p">(</span>
+                        <span class="s1">&#39;div.stall-head.fl div.stall-head-name a::attr(href)&#39;</span><span class="p">,</span>
+                        <span class="n">TakeFirst</span><span class="p">()))))</span>
+        <span class="n">shop_loader</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">nested_css</span><span class="p">(</span><span class="s1">&#39;div.shop-info div.shop-content&#39;</span><span class="p">)</span>
+        <span class="n">shop_loader</span><span class="o">.</span><span class="n">add_css</span><span class="p">(</span>
+            <span class="s1">&#39;market_name&#39;</span><span class="p">,</span> <span class="s1">&#39;h2.shop-name span::text&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+        <span class="c1">#  shop_table = shop_loader.nested_css(&#39;ul.mt10&#39;)</span>
+        <span class="n">attr_list</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span>
+            <span class="s1">&#39;div.shop-info div.shop-content ul.mt10 div.attr::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+        <span class="n">value_list</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span>
+            <span class="s1">&#39;div.shop-info div.shop-content ul.mt10 div.text&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">attr_list</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">value_list</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;shop table name and value don</span><span class="se">\&#39;</span><span class="s1">t match&#39;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_list</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;shop table name list is empty&#39;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">attr_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;：&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">attr_list</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="s1">&#39;排行&#39;</span> <span class="ow">in</span> <span class="n">attr_list</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_rank&#39;</span><span class="p">,</span>
+                <span class="n">value_list</span><span class="p">[</span><span class="n">attr_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;排行&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span>
+                    <span class="s1">&#39;a/em/text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">())</span>
+        <span class="k">if</span> <span class="s1">&#39;旺旺&#39;</span> <span class="ow">in</span> <span class="n">attr_list</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_contact_wangwang&#39;</span><span class="p">,</span>
+                <span class="n">value_list</span><span class="p">[</span><span class="n">attr_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;旺旺&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span>
+                    <span class="s1">&#39;span[@class=&quot;fl&quot;]/text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">())</span>
+        <span class="k">if</span> <span class="s1">&#39;商品&#39;</span> <span class="ow">in</span> <span class="n">attr_list</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_item_num&#39;</span><span class="p">,</span>
+                <span class="n">value_list</span><span class="p">[</span><span class="n">attr_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;商品&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span>
+                    <span class="s1">&#39;text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="s1">&#39;(\d+)&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s1">&#39;电话&#39;</span> <span class="ow">in</span> <span class="n">attr_list</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_contact_phone&#39;</span><span class="p">,</span>
+                <span class="n">value_list</span><span class="p">[</span><span class="n">attr_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;电话&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span>
+                    <span class="s1">&#39;p/text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">())</span>
+        <span class="k">if</span> <span class="s1">&#39;微信&#39;</span> <span class="ow">in</span> <span class="n">attr_list</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_contact_weixin&#39;</span><span class="p">,</span>
+                <span class="n">value_list</span><span class="p">[</span><span class="n">attr_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;微信&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">())</span>
+        <span class="k">if</span> <span class="s1">&#39;QQ&#39;</span> <span class="ow">in</span> <span class="n">attr_list</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_contact_qq&#39;</span><span class="p">,</span>
+                <span class="n">value_list</span><span class="p">[</span><span class="n">attr_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;QQ&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">())</span>
+        <span class="k">if</span> <span class="s1">&#39;产地&#39;</span> <span class="ow">in</span> <span class="n">attr_list</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_addr&#39;</span><span class="p">,</span>
+                <span class="n">value_list</span><span class="p">[</span><span class="n">attr_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;产地&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">())</span>
+        <span class="k">if</span> <span class="s1">&#39;地址&#39;</span> <span class="ow">in</span> <span class="n">attr_list</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">replace_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_addr&#39;</span><span class="p">,</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">get_collected_values</span><span class="p">(</span>
+                    <span class="s1">&#39;market_addr&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">value_list</span><span class="p">[</span>
+                        <span class="n">attr_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;地址&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span>
+                            <span class="s1">&#39;text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+<div class="viewcode-block" id="VvicSpider.parse_from_index_page"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_from_index_page">[docs]</a>    <span class="k">def</span> <span class="nf">parse_from_index_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse website index page to get &#39;city&#39; market info.</span>
+<span class="sd">        Indext url: http://www.vvic.com</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#  if response.status in (301, 302):</span>
+        <span class="c1">#      self.logger.error(</span>
+        <span class="c1">#          &#39;redirect error, status: %s&#39; % response.status)</span>
+        <span class="c1">#      self.logger.error(</span>
+        <span class="c1">#          &#39;redirect error, url: %s&#39; % response.meta[&#39;original_url&#39;])</span>
+        <span class="c1">#      self.logger.error(&#39;redirect url: %s&#39; % response.url)</span>
+        <span class="c1">#      self.logger.error(&#39;redirect response: %s&#39; % response.text)</span>
+
+        <span class="n">data_type</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">data_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;market&#39;</span><span class="p">,</span> <span class="s1">&#39;product&#39;</span><span class="p">]:</span>
+            <span class="n">original_url</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span>
+            <span class="c1"># get the top market info</span>
+            <span class="n">loader</span> <span class="o">=</span> <span class="n">ItemLoader</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">IndexPage</span><span class="p">(),</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+            <span class="n">top_market_num</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="c1"># plaftform info</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;platform_code&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">])</span>
+
+            <span class="n">global_markets_str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span>
+                <span class="sa">r</span><span class="s2">&quot;_gobal_marketes\s*=\s*&#39;\[(.*)\]&#39;;&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1">#  global_markets = re.findall(</span>
+            <span class="c1">#      r&quot;{panggeFlag=(\d+),\s*code=(\w+),&quot;</span>
+            <span class="c1">#      &quot;\s*rankFlag=(\d+),\s*name=(\w+),\s*id=(\d+)}&quot;,</span>
+            <span class="c1">#      global_markets_str)</span>
+            <span class="n">global_markets</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span>
+                <span class="sa">r</span><span class="s2">&quot;{panggeFlag=(\d+),\s*code=(\w+),\s*rankFlag=(\d+),&quot;</span>
+                <span class="s2">&quot;\s*name=(\w+),\s*id=(\d+),\s*strengthFlag=\d+}&quot;</span><span class="p">,</span>
+                <span class="n">global_markets_str</span><span class="p">)</span>
+            <span class="n">next_url_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">next_code_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">next_addr_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">next_market_id_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">market</span> <span class="ow">in</span> <span class="n">global_markets</span><span class="p">:</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_id&#39;</span><span class="p">,</span> <span class="n">market</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_name&#39;</span><span class="p">,</span> <span class="n">market</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_code&#39;</span><span class="p">,</span> <span class="n">market</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_type&#39;</span><span class="p">,</span> <span class="s1">&#39;city&#39;</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;parent_market_id&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                    <span class="s1">&#39;market_url&#39;</span><span class="p">,</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">],</span>
+                                          <span class="n">market</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                <span class="k">if</span> <span class="n">market</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;杭州男装&#39;</span><span class="p">:</span>
+                    <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_addr&#39;</span><span class="p">,</span> <span class="s1">&#39;浙江省 &#39;</span> <span class="o">+</span> <span class="n">market</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_addr&#39;</span><span class="p">,</span> <span class="s1">&#39;广东 &#39;</span> <span class="o">+</span> <span class="n">market</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_status&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+
+                <span class="n">next_url_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">urljoin</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">],</span> <span class="n">market</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                <span class="n">next_market_id_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">market</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">next_code_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">market</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">market</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;杭州男装&#39;</span><span class="p">:</span>
+                    <span class="n">next_addr_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;浙江省 &#39;</span> <span class="o">+</span> <span class="n">market</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">next_addr_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;广东 &#39;</span> <span class="o">+</span> <span class="n">market</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+                <span class="c1"># next_addr_list.append(&#39;广东 &#39; + market[-2])</span>
+                <span class="n">top_market_num</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;created_time&#39;</span><span class="p">,</span>
+                <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span>
+                                           <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">))</span>
+            <span class="k">yield</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_item</span><span class="p">()</span>
+
+            <span class="c1"># get the basic info about the website</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+                <span class="n">url</span><span class="o">=</span><span class="n">urljoin</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="s1">&#39;/contact.html&#39;</span><span class="p">),</span>
+                <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_from_contact_page</span><span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">original_url</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_code</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">top_market_num</span>
+            <span class="k">yield</span> <span class="n">request</span>
+
+            <span class="c1"># get city market info</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                    <span class="n">next_url_list</span><span class="p">,</span> <span class="n">next_market_id_list</span><span class="p">,</span>
+                    <span class="n">next_code_list</span><span class="p">,</span> <span class="n">next_addr_list</span><span class="p">):</span>
+
+                <span class="n">request</span> <span class="o">=</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+                    <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_from_city_index_page</span><span class="p">)</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_code</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mid</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_addr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">addr</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_type</span>
+                <span class="k">yield</span> <span class="n">request</span></div>
+
+<div class="viewcode-block" id="VvicSpider.parse_from_contact_page"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_from_contact_page">[docs]</a>    <span class="k">def</span> <span class="nf">parse_from_contact_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the basic info about the website&quot;&quot;&quot;</span>
+        <span class="c1">#  if response.status in (301, 302):</span>
+        <span class="c1">#      self.logger.error(</span>
+        <span class="c1">#          &#39;redirect error, url: %s&#39; % response.meta[&#39;original_url&#39;])</span>
+        <span class="c1">#      self.logger.error(&#39;redirect response: %s&#39; % response.text)</span>
+
+        <span class="n">loader</span> <span class="o">=</span> <span class="n">ItemLoader</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">ContactPage</span><span class="p">(),</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;platform_code&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">])</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_id&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;parent_market_id&#39;</span><span class="p">,</span> <span class="s1">&#39;-1&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_css</span><span class="p">(</span>
+            <span class="s1">&#39;market_name&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;div.contact-left table:last-child tbody tr:first-child &#39;</span>
+            <span class="s1">&#39;td:last-child::text&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_type&#39;</span><span class="p">,</span> <span class="s1">&#39;website&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_url&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">])</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_addr&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;广州 天河区 元岗路 智汇Park创意园 B座505-506&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_status&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_item_num&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_num&#39;</span><span class="p">]))</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_css</span><span class="p">(</span>
+            <span class="s1">&#39;market_contact_mail&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;div.contact-left table:last-child tbody tr:nth-child(2) &#39;</span>
+            <span class="s1">&#39;td:last-child::text&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_css</span><span class="p">(</span>
+            <span class="s1">&#39;market_contact_phone&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;div.contact-left table:last-child tbody tr:last-child &#39;</span>
+            <span class="s1">&#39;td:last-child::text&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;created_time&#39;</span><span class="p">,</span>
+            <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_item</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="VvicSpider.parse_from_city_index_page"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_from_city_index_page">[docs]</a>    <span class="k">def</span> <span class="nf">parse_from_city_index_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        parse city market index page to get &#39;mall&#39; market</span>
+<span class="sd">        info(the tab &#39;市场&#39; in web page&#39;)</span>
+
+<span class="sd">        city market index e.g.: http://www.vvic.com/gz</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#  if response.status in (301, 302):</span>
+        <span class="c1">#      self.logger.error(</span>
+        <span class="c1">#          &#39;redirect error, url: %s&#39; % response.meta[&#39;original_url&#39;])</span>
+        <span class="c1">#      self.logger.error(&#39;redirect response: %s&#39; % response.text)</span>
+        <span class="n">data_type</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">data_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;market&#39;</span><span class="p">,</span> <span class="s1">&#39;product&#39;</span><span class="p">]:</span>
+            <span class="n">original_url</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span>
+
+            <span class="n">loader</span> <span class="o">=</span> <span class="n">ItemLoader</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">MarketPage</span><span class="p">(),</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;platform_code&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">])</span>
+
+            <span class="n">next_url_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">next_market_id_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">next_market_name_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">next_code_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">next_addr_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">mall_market_num</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span>
+                    <span class="s1">&#39;div.index_markets div.index_markets_list a&#39;</span><span class="p">):</span>
+                <span class="c1"># 解放南鞋城 比较特殊,</span>
+                <span class="c1"># url为http://www.vvic.com/jfn/markets.html#floor200</span>
+                <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;jfn&#39;</span><span class="p">:</span>
+                    <span class="n">mid</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_id&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span>
+                        <span class="s1">&#39;@href&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_id&#39;</span><span class="p">,</span> <span class="n">mid</span><span class="p">)</span>
+                    <span class="n">next_market_id_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mid</span><span class="p">)</span>
+                    <span class="n">next_code_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;jfn&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">mid</span> <span class="o">=</span> <span class="n">ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;@href&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_id&#39;</span><span class="p">,</span> <span class="n">mid</span><span class="p">)</span>
+                    <span class="n">next_market_id_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mid</span><span class="p">)</span>
+                    <span class="n">next_code_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                    <span class="s1">&#39;parent_market_id&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_id&#39;</span><span class="p">])</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                    <span class="s1">&#39;market_name&#39;</span><span class="p">,</span> <span class="n">ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;./text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_type&#39;</span><span class="p">,</span> <span class="s1">&#39;mall&#39;</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                    <span class="s1">&#39;market_url&#39;</span><span class="p">,</span> <span class="n">urljoin</span><span class="p">(</span>
+                        <span class="n">original_url</span><span class="p">,</span> <span class="n">ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;@href&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()))</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                    <span class="s1">&#39;market_addr&#39;</span><span class="p">,</span>
+                    <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_addr&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span>
+                        <span class="s1">&#39;./text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_status&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+
+                <span class="n">next_url_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">urljoin</span><span class="p">(</span><span class="n">original_url</span><span class="p">,</span> <span class="n">ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;@href&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()))</span>
+                <span class="n">next_addr_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_addr&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span>
+                        <span class="s1">&#39;./text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+                <span class="n">next_market_name_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;./text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+                <span class="n">mall_market_num</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;created_time&#39;</span><span class="p">,</span>
+                <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                    <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">))</span>
+            <span class="k">yield</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_item</span><span class="p">()</span>
+
+            <span class="c1"># update number of market mall for city market</span>
+            <span class="n">loader</span> <span class="o">=</span> <span class="n">ItemLoader</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">MarketPage</span><span class="p">(),</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;platform_code&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">])</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_id&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_id&#39;</span><span class="p">])</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_url&#39;</span><span class="p">,</span> <span class="n">original_url</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_item_num&#39;</span><span class="p">,</span> <span class="n">mall_market_num</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_item</span><span class="p">()</span>
+
+            <span class="c1"># parse mall market index page to get &#39;floor&#39; market info</span>
+            <span class="n">jfn_url</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">jfn_market_id_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                    <span class="n">next_url_list</span><span class="p">,</span> <span class="n">next_market_id_list</span><span class="p">,</span>
+                    <span class="n">next_code_list</span><span class="p">,</span> <span class="n">next_addr_list</span><span class="p">,</span> <span class="n">next_market_name_list</span><span class="p">):</span>
+                <span class="c1"># download the web only one time for the tow urls:</span>
+                <span class="c1"># http://www.vvic.com/jfn/markets.html#floor202</span>
+                <span class="c1"># http://www.vvic.com/jfn/markets.html#floor201</span>
+                <span class="k">if</span> <span class="n">code</span> <span class="o">==</span> <span class="s1">&#39;jfn&#39;</span><span class="p">:</span>
+                    <span class="n">jfn_url</span> <span class="o">=</span> <span class="n">url</span>
+                    <span class="n">jfn_market_id_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mid</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="n">request</span> <span class="o">=</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+                    <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_from_mall_index_page</span><span class="p">)</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_code</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mid</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_addr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">addr</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_type</span>
+                <span class="k">yield</span> <span class="n">request</span>
+
+            <span class="c1"># parse mall market index page for &#39;解放南鞋城&#39;</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+                <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_from_mall_index_page</span><span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">jfn_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_code</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_id_list&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">jfn_market_id_list</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;jfn&#39;</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_type</span>
+            <span class="k">yield</span> <span class="n">request</span></div>
+
+<div class="viewcode-block" id="VvicSpider.parse_from_mall_index_page"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_from_mall_index_page">[docs]</a>    <span class="k">def</span> <span class="nf">parse_from_mall_index_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        parse mall market index page to get &#39;floor&#39; market info and</span>
+<span class="sd">        &#39;shop&#39; market info</span>
+<span class="sd">        mall market index e.g.: http://www.vvic.com/xt/shops/400</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#  if response.status in (301, 302):</span>
+        <span class="c1">#      self.logger.error(</span>
+        <span class="c1">#          &#39;redirect error, url: %s&#39; % response.meta[&#39;original_url&#39;])</span>
+        <span class="c1">#      self.logger.error(&#39;redirect response: %s&#39; % response.text)</span>
+
+        <span class="n">original_url</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span>
+        <span class="n">floor_market_item_num</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">shop_market_item_num</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># get info of market floor</span>
+        <span class="n">loader</span> <span class="o">=</span> <span class="n">ItemLoader</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">MarketPage</span><span class="p">(),</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;platform_code&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">])</span>
+
+        <span class="n">selector_list</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span>
+            <span class="s1">&#39;div.w.w-shops div.mk-shops dl.stall-table&#39;</span><span class="p">)</span>   <span class="c1"># floor info table</span>
+        <span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">selector_list</span><span class="p">:</span>
+            <span class="n">data_id</span> <span class="o">=</span> <span class="n">ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;@data-id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span>
+            <span class="c1"># 解放南鞋城 比较特殊, get shop info directly</span>
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;jfn&#39;</span><span class="p">:</span>
+                <span class="n">data_id_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span>
+                    <span class="s1">&#39;market_id_list&#39;</span><span class="p">]}</span>
+                <span class="c1"># self.logger.info(&#39;**: %s&#39; % data_id)</span>
+                <span class="k">if</span> <span class="n">data_id</span> <span class="ow">in</span> <span class="n">data_id_dict</span><span class="p">:</span>
+                    <span class="c1"># update number of market shop for market mall</span>
+                    <span class="c1"># in &#39;解放南鞋城&#39;</span>
+                    <span class="n">shop_market_item_num</span> <span class="o">=</span> <span class="n">ele</span><span class="o">.</span><span class="n">css</span><span class="p">(</span>
+                        <span class="s1">&#39;[data-id=&quot;</span><span class="si">%s</span><span class="s1">&quot;] dt span.count::text&#39;</span> <span class="o">%</span>
+                        <span class="n">data_id</span><span class="p">)</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\d+)&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="c1"># self.logger.info(&#39;^^: %s&#39; % shop_market_item_num)</span>
+                    <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_id&#39;</span><span class="p">,</span> <span class="n">data_id_dict</span><span class="p">[</span><span class="n">data_id</span><span class="p">])</span>
+                    <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_url&#39;</span><span class="p">,</span> <span class="n">urljoin</span><span class="p">(</span>
+                        <span class="n">original_url</span><span class="p">,</span> <span class="s1">&#39;#</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">data_id</span><span class="p">))</span>
+                    <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_item_num&#39;</span><span class="p">,</span> <span class="n">shop_market_item_num</span><span class="p">)</span>
+                    <span class="c1"># yield loader.load_item()</span>
+
+                    <span class="c1"># get market shop info</span>
+                    <span class="n">data_index</span> <span class="o">=</span> <span class="n">ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;./@data-index&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span>
+                    <span class="n">selector_list</span> <span class="o">=</span> <span class="n">ele</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;dd ul.floor-item-</span><span class="si">%s</span><span class="s1"> li.last&#39;</span>
+                                            <span class="o">%</span> <span class="n">data_index</span><span class="p">)</span>
+                    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_market_from_shop_table</span><span class="p">(</span>
+                        <span class="n">response</span><span class="p">,</span> <span class="n">selector_list</span><span class="p">,</span> <span class="n">data_id_dict</span><span class="p">[</span><span class="n">data_id</span><span class="p">])</span>
+
+                    <span class="c1"># get all product in all market</span>
+                    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;product&#39;</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">selector_list</span><span class="p">:</span>
+                            <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span>
+                                <span class="n">original_url</span><span class="p">,</span>
+                                <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;a/@href&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+                            <span class="n">request</span> <span class="o">=</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+                                <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="p">(</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">parse_from_market_shop_page</span><span class="p">))</span>
+                            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+                            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span>
+                                <span class="s1">&#39;data_type&#39;</span><span class="p">]</span>
+                            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_code</span>
+                            <span class="k">yield</span> <span class="n">request</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">data_id</span> <span class="o">==</span> <span class="s1">&#39;-1&#39;</span><span class="p">:</span>   <span class="c1"># skip &quot;推荐档口&quot;</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">selector_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span>
+                    <span class="s1">&#39;dt/h2/text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;全部&#39;</span><span class="p">:</span>
+                <span class="n">shop_market_item_num</span> <span class="o">=</span> <span class="n">ele</span><span class="o">.</span><span class="n">css</span><span class="p">(</span>
+                    <span class="s1">&#39;[data-id=&quot;</span><span class="si">%s</span><span class="s1">&quot;] dt span.count::text&#39;</span> <span class="o">%</span> <span class="n">data_id</span><span class="p">)</span><span class="o">.</span><span class="n">re</span><span class="p">(</span>
+                        <span class="sa">r</span><span class="s1">&#39;(\d+)&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">floor_market_item_num</span> <span class="o">=</span> <span class="n">shop_market_item_num</span>
+
+                <span class="c1"># get market shop info</span>
+                <span class="n">data_index</span> <span class="o">=</span> <span class="n">ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;./@data-index&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span>
+                <span class="n">selector_list</span> <span class="o">=</span> <span class="n">ele</span><span class="o">.</span><span class="n">css</span><span class="p">(</span>
+                    <span class="s1">&#39;dd ul.floor-item-</span><span class="si">%s</span><span class="s1"> li.last&#39;</span> <span class="o">%</span> <span class="n">data_index</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_market_from_shop_table</span><span class="p">(</span>
+                    <span class="n">response</span><span class="p">,</span> <span class="n">selector_list</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_id&#39;</span><span class="p">])</span>
+
+                <span class="k">break</span>
+
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_id&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_id&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">data_id</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;parent_market_id&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_id&#39;</span><span class="p">])</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_name&#39;</span><span class="p">,</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_name&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span>
+                <span class="n">ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;dt/h2/text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_type&#39;</span><span class="p">,</span> <span class="s1">&#39;floor&#39;</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_url&#39;</span><span class="p">,</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">original_url</span><span class="p">,</span> <span class="s1">&#39;#</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">data_id</span><span class="p">))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_addr&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_addr&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span>
+                <span class="n">ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;dt/h2/text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_status&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_item_num&#39;</span><span class="p">,</span>
+                <span class="n">ele</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;dt span.count::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">(),</span> <span class="n">re</span><span class="o">=</span><span class="s1">&#39;(\d+)&#39;</span><span class="p">)</span>
+            <span class="n">floor_market_item_num</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span>
+                <span class="n">ele</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;dt span.count::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\d+)&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+            <span class="c1"># get market shop info</span>
+            <span class="n">data_index</span> <span class="o">=</span> <span class="n">ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;./@data-index&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span>
+            <span class="n">selector_list</span> <span class="o">=</span> <span class="n">ele</span><span class="o">.</span><span class="n">css</span><span class="p">(</span>
+                <span class="s1">&#39;dd ul.floor-item-</span><span class="si">%s</span><span class="s1"> li.last&#39;</span> <span class="o">%</span> <span class="n">data_index</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_market_from_shop_table</span><span class="p">(</span>
+                <span class="n">response</span><span class="p">,</span> <span class="n">selector_list</span><span class="p">,</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_id&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">data_id</span><span class="p">)</span>
+
+            <span class="c1"># get all product in all market</span>
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;product&#39;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">selector_list</span><span class="p">:</span>
+                    <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span>
+                        <span class="n">original_url</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;a/@href&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+                    <span class="n">request</span> <span class="o">=</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+                        <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+                        <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_from_market_shop_page</span><span class="p">)</span>
+                    <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+                    <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span>
+                    <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_code</span>
+                    <span class="k">yield</span> <span class="n">request</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;created_time&#39;</span><span class="p">,</span>
+                <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                    <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">))</span>
+            <span class="k">yield</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_item</span><span class="p">()</span>
+
+        <span class="c1"># update number of market floor for market mall</span>
+        <span class="c1"># 解放南鞋城 比较特殊, get shop info directly</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_code&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;jfn&#39;</span><span class="p">:</span>
+            <span class="n">loader</span> <span class="o">=</span> <span class="n">ItemLoader</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">MarketPage</span><span class="p">(),</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;platform_code&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">])</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_id&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;market_id&#39;</span><span class="p">])</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_url&#39;</span><span class="p">,</span> <span class="n">original_url</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_item_num&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">floor_market_item_num</span><span class="p">))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;created_time&#39;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_item_num&#39;</span><span class="p">,</span> <span class="n">shop_market_item_num</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_item</span><span class="p">()</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_convert_str_to_list</span><span class="p">(</span><span class="n">comma_seperate_str</span><span class="p">,</span> <span class="n">seperator</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">seperator</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">comma_seperate_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_parse_market_from_shop_table</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">selector_list</span><span class="p">,</span> <span class="n">market_id</span><span class="p">):</span>
+        <span class="n">original_url</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span>
+        <span class="n">loader</span> <span class="o">=</span> <span class="n">ItemLoader</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">MarketPage</span><span class="p">(),</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;platform_code&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">selector_list</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_id&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;a/@data-id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;parent_market_id&#39;</span><span class="p">,</span> <span class="n">market_id</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_type&#39;</span><span class="p">,</span> <span class="s1">&#39;shop&#39;</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_status&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_url&#39;</span><span class="p">,</span>
+                <span class="n">urljoin</span><span class="p">(</span><span class="n">original_url</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;a/@href&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_name&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;a/@data-title&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_contact_wangwang&#39;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_convert_str_to_list</span><span class="p">(</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;a/@data-ww&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_contact_qq&#39;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_convert_str_to_list</span><span class="p">(</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;a/@data-qq&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_contact_phone&#39;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_convert_str_to_list</span><span class="p">(</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;a/@data-tel&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_contact_weixin&#39;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_convert_str_to_list</span><span class="p">(</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;a/@data-wachat&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_addr&#39;</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;a/@data-source&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span> <span class="o">+</span>
+                    <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;a/@data-market&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span> <span class="o">+</span>
+                    <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;a/@data-floor&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span> <span class="o">+</span>
+                    <span class="s1">&#39;楼 &#39;</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;a/@data-position&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_start_time&#39;</span><span class="p">,</span>
+                <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;a/@data-sbd&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">(),</span>
+                    <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">),</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;market_exist_time&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;a/@data-years&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;created_time&#39;</span><span class="p">,</span>
+            <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_item</span><span class="p">()</span>
+
+<div class="viewcode-block" id="VvicSpider.parse_from_search_page"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_from_search_page">[docs]</a>    <span class="k">def</span> <span class="nf">parse_from_search_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        parse search index page to get category info</span>
+<span class="sd">        entrance url: http://www.vvic.com/gz/list/index.html</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data_type</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;category&#39;</span><span class="p">:</span>
+            <span class="n">original_url</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span>
+            <span class="n">loader</span> <span class="o">=</span> <span class="n">ItemLoader</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">SearchPage</span><span class="p">(),</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+            <span class="c1"># plaftform info</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;platform_code&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">])</span>
+
+            <span class="c1"># get city code</span>
+            <span class="c1">#  global_markets_str = re.findall(</span>
+            <span class="c1">#      r&quot;_gobal_marketes\s*=\s*&#39;\[(.*)\]&#39;;&quot;, response.text)[0]</span>
+            <span class="c1">#  global_markets = re.findall(</span>
+            <span class="c1">#      r&quot;{panggeFlag=(\d+),\s*code=(\w+),\s*rankFlag=(\d+),&quot;</span>
+            <span class="c1">#      &quot;\s*name=(\w+),\s*id=(\d+)}&quot;,</span>
+            <span class="c1">#      global_markets_str)</span>
+            <span class="c1">#  next_code_list = [m[1] for m in global_markets]</span>
+
+            <span class="c1"># get top category code</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span>
+                    <span class="s2">&quot;div.search-condition div.screen &quot;</span>
+                    <span class="s2">&quot;div.nav-category.nav-pid &quot;</span>
+                    <span class="s2">&quot;div.nc-value div.types a[href=&#39;#&#39;]&quot;</span><span class="p">):</span>
+                <span class="n">pid</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;@data-val&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span>
+                <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">original_url</span><span class="p">,</span> <span class="s1">&#39;?pid=</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pid</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;category_id&#39;</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;parent_category_id&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                    <span class="s1">&#39;category_name&#39;</span><span class="p">,</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;category_url&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;category_status&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;category_level&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;category_is_leaf&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">)</span>
+
+                <span class="n">request</span> <span class="o">=</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+                    <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+                    <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_from_search_page_with_top_category</span><span class="p">)</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pid</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_code</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_type</span>
+                <span class="k">yield</span> <span class="n">request</span>
+
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;created_time&#39;</span><span class="p">,</span>
+                <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                    <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">))</span>
+            <span class="k">yield</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_item</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;product&#39;</span><span class="p">:</span>
+            <span class="n">keyword</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span>
+            <span class="n">city</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span>
+            <span class="n">page_num</span> <span class="o">=</span> <span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page_num&#39;</span><span class="p">)</span> <span class="k">if</span>
+                        <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page_num&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;keyword = </span><span class="si">%s</span><span class="s1">, city = </span><span class="si">%s</span><span class="s1">, page_num = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span>
+                             <span class="p">(</span><span class="n">keyword</span><span class="p">,</span> <span class="n">city</span><span class="p">,</span> <span class="n">page_num</span><span class="p">))</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.vvic.com/apic/search/asy?&#39;</span>
+                   <span class="s1">&#39;merge=1&amp;q=</span><span class="si">%s</span><span class="s1">&amp;searchCity=</span><span class="si">%s</span><span class="s1">&amp;currentPage=</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span>
+                   <span class="p">(</span><span class="n">quote</span><span class="p">(</span><span class="n">keyword</span><span class="p">),</span> <span class="n">city</span><span class="p">,</span> <span class="n">page_num</span><span class="p">))</span>
+
+            <span class="n">request</span> <span class="o">=</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+                <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+                <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_searched_product_from_search_ajax_page</span><span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;item_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;item_num&#39;</span><span class="p">]</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;page_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_num</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_code</span>
+            <span class="k">yield</span> <span class="n">request</span></div>
+
+<div class="viewcode-block" id="VvicSpider.parse_searched_product_from_search_ajax_page"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_searched_product_from_search_ajax_page">[docs]</a>    <span class="k">def</span> <span class="nf">parse_searched_product_from_search_ajax_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse the search page to get the product info.</span>
+<span class="sd">        The result page not only include product, and also include shop.</span>
+
+<span class="sd">        :param str keyword: The searched keyword</span>
+<span class="sd">        :param str item_num: Number of item whick will be scraped</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">page_num</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;page_num&#39;</span><span class="p">]</span>
+        <span class="n">item_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;item_num&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;item_num = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item_num</span><span class="p">)</span>
+        <span class="n">item_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;search_page&#39;</span><span class="p">][</span><span class="s1">&#39;recordList&#39;</span><span class="p">]:</span>
+            <span class="c1">#  self.logger.info(&#39;record:\n%s&#39; % record)</span>
+            <span class="c1">#  item_id = record[&#39;item_id&#39;]</span>
+            <span class="n">item_id</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;item_id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">item_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>     <span class="c1"># The item is shop</span>
+                <span class="k">continue</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://www.vvic.com/item/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item_id</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+                                     <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_product_from_product_page</span><span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;vcid&#39;</span><span class="p">])</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_code</span>
+            <span class="n">item_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">yield</span> <span class="n">request</span>
+
+            <span class="k">if</span> <span class="n">item_num</span> <span class="o">&lt;=</span> <span class="n">item_count</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;last item_count = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item_count</span><span class="p">)</span>
+                <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;item_count = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item_count</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://www.vvic.com/gz/search/index.html&#39;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_from_search_page</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;item_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item_num</span> <span class="o">-</span> <span class="n">item_count</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;page_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">page_num</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;product&#39;</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_code</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span>
+        <span class="k">yield</span> <span class="n">request</span></div>
+
+<div class="viewcode-block" id="VvicSpider.parse_from_search_page_with_top_category"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_from_search_page_with_top_category">[docs]</a>    <span class="k">def</span> <span class="nf">parse_from_search_page_with_top_category</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        parse top category search page to get category info</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data_type</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;category&#39;</span><span class="p">:</span>
+            <span class="n">original_url</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span>
+            <span class="n">pid</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span>
+
+            <span class="n">loader</span> <span class="o">=</span> <span class="n">ItemLoader</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">SearchPage</span><span class="p">(),</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;platform_code&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">])</span>
+
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div.catid_</span><span class="si">%s</span><span class="s1"> &gt; div.nav-category&#39;</span> <span class="o">%</span> <span class="n">pid</span><span class="p">):</span>
+
+                <span class="n">cat_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                <span class="k">for</span> <span class="n">s1</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div.nc-value div.types a&#39;</span><span class="p">):</span>
+                    <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                        <span class="s1">&#39;category_name&#39;</span><span class="p">,</span> <span class="n">s1</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+                    <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                        <span class="s1">&#39;category_id&#39;</span><span class="p">,</span> <span class="n">s1</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;@data-val&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+                    <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                        <span class="s1">&#39;parent_category_id&#39;</span><span class="p">,</span>
+                        <span class="n">s1</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;@data-tagid&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+                    <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                        <span class="s1">&#39;category_url&#39;</span><span class="p">,</span>
+                        <span class="n">original_url</span> <span class="o">+</span> <span class="s1">&#39;&amp;vcid=</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">s1</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span>
+                            <span class="s1">&#39;@data-val&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+                    <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;category_status&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+                    <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;category_level&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">)</span>
+                    <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;category_is_leaf&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+                    <span class="n">cat_id</span> <span class="o">=</span> <span class="n">s1</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;@data-tagid&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span>
+
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;category_id&#39;</span><span class="p">,</span> <span class="n">cat_id</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                    <span class="s1">&#39;category_name&#39;</span><span class="p">,</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div.nc-key::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;parent_category_id&#39;</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;category_url&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;category_status&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;category_level&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;category_is_leaf&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">)</span>
+
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;created_time&#39;</span><span class="p">,</span>
+                <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                    <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">))</span>
+            <span class="k">yield</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_item</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="VvicSpider.parse_from_market_shop_page"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_from_market_shop_page">[docs]</a>    <span class="k">def</span> <span class="nf">parse_from_market_shop_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse market with product page to get all product info in this market.</span>
+<span class="sd">        Market &#39;shop&#39; page: https://www.vvic.com/shop/43929</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data_type</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;product&#39;</span><span class="p">:</span>
+            <span class="n">original_url</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span>
+
+            <span class="n">loader</span> <span class="o">=</span> <span class="n">ItemLoader</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">ProductPage</span><span class="p">(),</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;platform_code&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">])</span>
+
+            <span class="c1"># get page number for product</span>
+            <span class="c1">#  page_num = re.findall(</span>
+            <span class="c1">#      &quot;window\.PAGECOUNT\s*=\s*&#39;(\d+)&#39;&quot;, response.text)[0]</span>
+            <span class="c1"># get page size per page for product</span>
+            <span class="n">page_size</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span>
+                <span class="s2">&quot;window\.PAGESIZE\s*=\s*&#39;(\d+)&#39;&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1"># get all category for product</span>
+            <span class="n">cat_id_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">product_num_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span>
+                    <span class="s1">&#39;div.nav-category.show-more div.nc-value div.types a&#39;</span><span class="p">):</span>
+                <span class="n">cat_id_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\?vcid=(\d+)\&amp;&#39;</span><span class="p">,</span>
+                               <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;@href&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">product_num_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\d+)&#39;</span><span class="p">,</span>
+                               <span class="n">s</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
+
+            <span class="k">for</span> <span class="n">cat_id</span><span class="p">,</span> <span class="n">product_num</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cat_id_list</span><span class="p">,</span> <span class="n">product_num_list</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">product_num</span><span class="p">)</span> <span class="o">/</span> <span class="nb">int</span><span class="p">(</span><span class="n">page_size</span><span class="p">))):</span>
+                    <span class="n">url</span> <span class="o">=</span> <span class="n">original_url</span> <span class="o">+</span> <span class="s1">&#39;?vcid=</span><span class="si">{}</span><span class="s1">&amp;currentPage=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">cat_id</span><span class="p">,</span> <span class="n">num</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="c1">#  self.logger.info(&#39;product_num = %s&#39; % product_num)</span>
+                    <span class="c1">#  self.logger.info(&#39;cat_id = %s&#39; % cat_id)</span>
+                    <span class="c1">#  self.logger.info(&#39;num = %s&#39; % num)</span>
+                    <span class="c1">#  self.logger.info(&#39;url = %s&#39; % url)</span>
+                    <span class="c1">#  self.logger.info(&#39;range = %s&#39; % range(math.ceil(int(product_num) / int(page_size))))</span>
+
+                    <span class="n">request</span> <span class="o">=</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">parse_from_market_with_product_page_pagination</span><span class="p">))</span>
+                    <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+                    <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cat_id</span>
+                    <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_code</span>
+                    <span class="k">yield</span> <span class="n">request</span></div>
+
+<div class="viewcode-block" id="VvicSpider.parse_from_market_with_product_page_pagination"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_from_market_with_product_page_pagination">[docs]</a>    <span class="k">def</span> <span class="nf">parse_from_market_with_product_page_pagination</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        parse market with product page to get all product info in this market</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">original_url</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div.goods-list.shop-list ul li&#39;</span><span class="p">):</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">original_url</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span>
+                <span class="s1">&#39;div.item div.desc div.title a::attr(href)&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+                                     <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_product_from_product_page</span><span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_code</span>
+            <span class="k">yield</span> <span class="n">request</span></div>
+
+    <span class="k">def</span> <span class="nf">errback_parse_from_market_with_product_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">failure</span><span class="p">):</span>
+        <span class="c1"># log all failures</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">failure</span><span class="p">))</span>
+
+        <span class="c1"># in case you want to do something special for some errors,</span>
+        <span class="c1"># you may need the failure&#39;s type:</span>
+
+        <span class="k">if</span> <span class="n">failure</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">HttpError</span><span class="p">):</span>
+            <span class="c1"># these exceptions come from HttpError spider middleware</span>
+            <span class="c1"># you can get the non-200 response</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">failure</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">response</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;HttpError on </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">failure</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">DNSLookupError</span><span class="p">):</span>
+            <span class="c1"># this is the original request</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="n">failure</span><span class="o">.</span><span class="n">request</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;DNSLookupError on </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">failure</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="ne">TimeoutError</span><span class="p">,</span> <span class="n">TCPTimedOutError</span><span class="p">):</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="n">failure</span><span class="o">.</span><span class="n">request</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;TimeoutError on </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, Jim Sun
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

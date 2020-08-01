@@ -1,0 +1,287 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Design of Product &mdash; ECProduct 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Configration of ECProduct" href="../config.html" />
+    <link rel="prev" title="Welcome to ECProduct’s documentation!" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ECProduct
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Design of Product</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#design-of-vvic-spider">Design of ‘VVIC’ Spider</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../config.html">Configration of ECProduct</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user/user.html">User Guide of ECProduct</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tool/tool.html">Tools used for ECProduct</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/api.html">Developer Interface</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ECProduct</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Design of Product</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/design/design.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="design-of-product">
+<span id="design"></span><h1>Design of Product<a class="headerlink" href="#design-of-product" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="design-of-vvic-spider">
+<h2>Design of ‘VVIC’ Spider<a class="headerlink" href="#design-of-vvic-spider" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>vvic商品详情页面信息：
+    商品信息：
+        商品名字: product_name
+        商品链接: product_url
+        商品ID:   
+            本网站商品ID: product_id
+            链接网站对应商品ID: product_link_id
+        商品价格: 
+            商品原有价格: product_original_price
+            商品卖出价格: product_sale_price
+            商品范围价格: product_range_price
+            商品价格单位: product_price_unit
+            链接网站对应商品价格: product_price
+            商品折扣价格: product_discount_price
+
+        商品属性：
+            颜色: product_color
+                颜色名字: product_color_name
+                颜色ID: product_color_id
+            尺码: size
+                尺码名字: product_size_name
+                尺码ID: product_size_id
+            数量: product_quantity
+            属性组合ID: product_sku_id
+        商品图片:
+            图片链接: product_img_url
+                索引图片链接: product_index_img_url
+        商品类别: product_category
+        商品上新时间: product_upload_time
+
+
+
+    店铺信息：
+        店铺名称: store_name
+        店铺ID: store_id
+        店铺链接: store_url
+        店铺排行: store_rank
+        店铺商品数量: store_product_num
+        店铺卖家信息：
+            卖家名字: store_seller_name 
+            卖家联系方式：
+                卖家电话: store_seller_phone
+                卖家微信: store_seller_wechat
+                卖家QQ: store_seller_qq
+            卖家地址: store_seller_addr
+
+    商家信息:
+        商家ID: merchant_id
+        
+
+
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../config.html" class="btn btn-neutral float-right" title="Configration of ECProduct" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to ECProduct’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, Jim Sun
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

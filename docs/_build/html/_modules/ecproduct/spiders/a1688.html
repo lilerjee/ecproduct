@@ -1,0 +1,621 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ecproduct.spiders.a1688 &mdash; ECProduct 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> ECProduct
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/design.html">Design of Product</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../config.html">Configration of ECProduct</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/user.html">User Guide of ECProduct</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tool/tool.html">Tools used for ECProduct</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/api.html">Developer Interface</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ECProduct</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>ecproduct.spiders.a1688</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for ecproduct.spiders.a1688</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">* Commands to run 1688 Spider:</span>
+
+<span class="sd">  #. Add right URLs to `input/1688_url_test.txt` or `input/1688_url.txt`.</span>
+<span class="sd">  #. Run the following commands.</span>
+
+<span class="sd">     * Get product info from product page::</span>
+
+<span class="sd">        $ python main.py 1688 product product -f test</span>
+
+<span class="sd">     * Get market info from website index page::</span>
+
+<span class="sd">        $ python main.py 1688 index market -f test</span>
+
+<span class="sd">     * Get category info from reaserch index page::</span>
+
+<span class="sd">        $ python main.py 1688 search category -f test</span>
+
+<span class="sd">     * Get all products info of the market from market page::</span>
+
+<span class="sd">        $ python main.py 1688 market product -f test</span>
+
+<span class="sd">     * Get all products info of the website from website index page::</span>
+
+<span class="sd">        $ python main.py 1688 index product -f test</span>
+
+<span class="sd">     * Get all products info from search page according to one keyword::</span>
+
+<span class="sd">        $ python main.py 1688 search product -f test -a keyword=衬衫 -a item_num=100 -a city=gz</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
+<span class="kn">import</span> <span class="nn">scrapy</span>
+<span class="kn">from</span> <span class="nn">ecproduct.items</span> <span class="kn">import</span> <span class="n">ProductPage</span>
+<span class="c1"># from ecproduct.items import MarketPage, IndexPage, SearchPage, ContactPage</span>
+<span class="kn">from</span> <span class="nn">scrapy.loader</span> <span class="kn">import</span> <span class="n">ItemLoader</span>
+<span class="kn">from</span> <span class="nn">scrapy.loader.processors</span> <span class="kn">import</span> <span class="n">Compose</span>
+<span class="c1"># from scrapy.loader.processors import TakeFirst, Compose</span>
+<span class="kn">from</span> <span class="nn">ecproduct.spiders.ecproduct</span> <span class="kn">import</span> <span class="n">EcproductSpider</span>
+<span class="c1"># from scrapy.http.response import urljoin</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">unquote</span><span class="p">,</span> <span class="n">quote</span>
+<span class="c1"># from log import Log</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="c1"># import sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+
+<div class="viewcode-block" id="A1688Spider"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.a1688.A1688Spider">[docs]</a><span class="k">class</span> <span class="nc">A1688Spider</span><span class="p">(</span><span class="n">scrapy</span><span class="o">.</span><span class="n">Spider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;1688&#39;</span>
+    <span class="n">allowed_domains</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1688.com&#39;</span><span class="p">]</span>
+    <span class="n">platform_code</span> <span class="o">=</span> <span class="s1">&#39;HG058&#39;</span>
+    <span class="c1"># start_urls = [&#39;http://1688.com/&#39;]</span>
+
+    <span class="n">project_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)))</span>
+    <span class="n">this_file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">custom_settings</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1">#  &#39;FEED_URI&#39;: (</span>
+        <span class="c1">#      &#39;file:///&#39; + project_path + os.path.sep +</span>
+        <span class="c1">#      &#39;output&#39; + os.path.sep + this_file_name + &#39;.jl&#39;),</span>
+        <span class="c1">#  &#39;FEED_EXPORT_ENCODING&#39;: &#39;utf-8&#39;,</span>
+        <span class="c1">#  &#39;FEED_EXPORT_ENCODING&#39;: &#39;gb2312&#39;,</span>
+        <span class="c1">#  &#39;FEED_FORMAT&#39;: &#39;csv&#39;,</span>
+        <span class="c1">#  &#39;FEED_FORMAT&#39;: &#39;jsonlines&#39;,</span>
+        <span class="c1">#  &#39;FEED_EXPORT_FIELDS&#39;: [&#39;product_color_id&#39;, &#39;product_color_name&#39;,</span>
+        <span class="c1">#                         &#39;product_id&#39;, &#39;product_index_img_url&#39;,</span>
+        <span class="c1">#                         &#39;product_source_id&#39;, &#39;product_link_price&#39;],</span>
+
+        <span class="s1">&#39;LOG_ENABLED&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;LOG_ENCODING&#39;</span><span class="p">:</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">,</span>
+        <span class="c1"># &#39;LOG_FILE&#39;: &#39;ecproduct.log&#39;,</span>
+        <span class="s1">&#39;LOG_FILE&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">project_path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s1">&#39;log&#39;</span> <span class="o">+</span>
+                     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">this_file_name</span> <span class="o">+</span> <span class="s1">&#39;.log&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;LOG_FORMAT&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> [</span><span class="si">%(name)s</span><span class="s1">] </span><span class="si">%(levelname)s</span><span class="s1">: </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;LOG_LEVEL&#39;</span><span class="p">:</span> <span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span>
+        <span class="c1"># &#39;LOG_LEVEL&#39;: &#39;INFO&#39;,</span>
+        <span class="s1">&#39;LOG_STDOUT&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;DOWNLOAD_DELAY&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s1">&#39;RANDOMIZE_DOWNLOAD_DELAY&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;DOWNLOAD_TIMEOUT&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="p">}</span>
+
+<div class="viewcode-block" id="A1688Spider.__init__"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.a1688.A1688Spider.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">entrance_page</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span>
+                 <span class="n">home_item_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">platform_code</span><span class="o">=</span><span class="n">platform_code</span><span class="p">,</span> <span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                 <span class="n">item_num</span><span class="o">=</span><span class="s1">&#39;100&#39;</span><span class="p">):</span>
+
+        <span class="n">EcproductSpider</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">entrance_page</span><span class="o">=</span><span class="n">entrance_page</span><span class="p">,</span>
+            <span class="n">data_type</span><span class="o">=</span><span class="n">data_type</span><span class="p">,</span> <span class="n">home_item_id</span><span class="o">=</span><span class="n">home_item_id</span><span class="p">,</span>
+            <span class="n">platform_code</span><span class="o">=</span><span class="n">platform_code</span><span class="p">,</span> <span class="n">keyword</span><span class="o">=</span><span class="n">keyword</span><span class="p">,</span>
+            <span class="n">item_num</span><span class="o">=</span><span class="n">item_num</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">start_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">EcproductSpider</span><span class="o">.</span><span class="n">start_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="A1688Spider.parse_product_from_product_page"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.a1688.A1688Spider.parse_product_from_product_page">[docs]</a>    <span class="k">def</span> <span class="nf">parse_product_from_product_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse product detail page.</span>
+
+<span class="sd">        * Product URL example:</span>
+
+<span class="sd">            - Unshelf product:</span>
+
+<span class="sd">              https://detail.1688.com/offer/543884257260.html</span>
+
+<span class="sd">            - product which has three price range:</span>
+
+<span class="sd">              https://detail.1688.com/offer/544560773525.html</span>
+
+<span class="sd">            - product which has three price and discount price range:</span>
+
+<span class="sd">              https://detail.1688.com/offer/539065306832.html</span>
+
+<span class="sd">            - product which has only one price range:</span>
+
+<span class="sd">              https://detail.1688.com/offer/40976180711.html</span>
+<span class="sd">              https://detail.1688.com/offer/543218337857.html</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span>
+        <span class="n">loader</span> <span class="o">=</span> <span class="n">ItemLoader</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">ProductPage</span><span class="p">(),</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+
+        <span class="c1"># plaftform info</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;platform_code&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">])</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;product_category_id&#39;</span><span class="p">,</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;category_id&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+
+        <span class="c1"># determin whether the product is deleted,</span>
+        <span class="c1"># or if the webpage is found, or the product is unshelf.</span>
+        <span class="n">error_url</span> <span class="o">=</span> <span class="s1">&#39;http://page.1688.com/shtml/static/wrongpage.html&#39;</span>
+        <span class="n">error_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">error_url</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">error_match</span><span class="p">:</span>
+            <span class="n">error_text</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span>
+                <span class="s1">&#39;div.header &gt; h3.title &gt; em.highlight::text&#39;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">error_text</span> <span class="o">==</span> <span class="s1">&#39;查找的商品已删除&#39;</span><span class="p">:</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                    <span class="s1">&#39;product_id&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+                    <span class="n">Compose</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">re</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;(\d+)\.html&#39;</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_url&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_status&#39;</span><span class="p">,</span> <span class="s1">&#39;deleted&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">error_text</span> <span class="o">==</span> <span class="s1">&#39;Error 404&#39;</span><span class="p">:</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                    <span class="s1">&#39;product_id&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+                    <span class="n">Compose</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">re</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;(\d+)\.html&#39;</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_url&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_status&#39;</span><span class="p">,</span> <span class="s1">&#39;nonexistent&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;other error happened: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">error_text</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div.mod-detail-offline&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="s1">&#39;商品已下架&#39;</span> <span class="ow">in</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;h3.mod-detail-offline-title&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()):</span>
+
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                    <span class="s1">&#39;product_id&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">re</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;(\d+)\.html&#39;</span><span class="p">)</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_url&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_status&#39;</span><span class="p">,</span> <span class="s1">&#39;unshelf&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_product_info</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_attribute_sku_info</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_img_info</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_shop_info</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+
+        <span class="c1"># extra field</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;created_time&#39;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+            <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_item</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_product_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="c1"># product info</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_url&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="c1"># product url &#39;^https?://([A-Za-z0-9\-]+\.)+vvic\.com/item/(\d+)$&#39;)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_id&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">re</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;(\d+)\.html?&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_status&#39;</span><span class="p">,</span> <span class="s1">&#39;onshelf&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_css</span><span class="p">(</span>
+            <span class="s1">&#39;product_name&#39;</span><span class="p">,</span> <span class="s1">&#39;div#mod-detail-title &gt; h1.d-title::text&#39;</span><span class="p">)</span>
+
+        <span class="c1"># get price range</span>
+        <span class="n">price_table</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div#mod-detail-price div.d-content table&#39;</span><span class="p">)</span>
+
+        <span class="n">price_data_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>
+            <span class="n">price_table</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;tr.price td span.value::text&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span><span class="p">]</span>
+        <span class="n">original_price_data_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>
+            <span class="n">price_table</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;tr.original-price td span.value::text&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span><span class="p">]</span>
+        <span class="n">amount_data_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>
+            <span class="n">price_table</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;tr.amount td span.value::text&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">price_data_list</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_sale_price&#39;</span><span class="p">,</span> <span class="n">price_data_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">original_price_data_list</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;product_original_range_price&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot;:&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span>
+                    <span class="nb">zip</span><span class="p">(</span><span class="n">amount_data_list</span><span class="p">,</span> <span class="n">original_price_data_list</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">price_data_list</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;product_range_price&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot;:&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span>
+                    <span class="nb">zip</span><span class="p">(</span><span class="n">amount_data_list</span><span class="p">,</span> <span class="n">price_data_list</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span><span class="p">)</span>
+
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;product_price_unit&#39;</span><span class="p">,</span> <span class="s1">&#39;CNY&#39;</span><span class="p">)</span>
+
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_css</span><span class="p">(</span>
+            <span class="s1">&#39;product_img_index_url&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;div#dt-tab li.tab-trigger.active::attr(data-imgs)&#39;</span><span class="p">,</span>
+            <span class="n">re</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;{&quot;preview&quot;\s*:\s*&quot;(.*?)&quot;&#39;</span><span class="p">)</span>
+
+        <span class="c1"># get product detail</span>
+        <span class="n">content_table</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span>
+            <span class="s1">&#39;div#mod-detail-attributes div.obj-content table&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">content_table</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">):</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;td.de-feature::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;td.de-value::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;product_detail&#39;</span><span class="p">,</span> <span class="p">[</span>
+                    <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+                    <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)])</span>
+
+    <span class="k">def</span> <span class="nf">_get_attribute_sku_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="c1"># attribute info</span>
+        <span class="n">attr_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span>
+            <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span>
+                <span class="sa">r</span><span class="s1">&#39;var\s+iDetailData\s+=\s+({.*?});&#39;</span><span class="p">,</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">S</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attr_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sku&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;skuProps&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;attr_name&#39;</span><span class="p">,</span> <span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;prop&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+            <span class="n">name_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">img_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="n">name_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+                <span class="n">img_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;imageUrl&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;attr_value&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">name_list</span><span class="p">])</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;attr_value_img_url&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">img_list</span><span class="p">])</span>
+
+        <span class="c1"># sku info</span>
+        <span class="n">sku_all</span> <span class="o">=</span> <span class="n">attr_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sku&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;skuMap&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">sku_key</span> <span class="ow">in</span> <span class="n">sku_all</span><span class="p">:</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;sku_id&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">sku_all</span><span class="p">[</span><span class="n">sku_key</span><span class="p">][</span><span class="s1">&#39;skuId&#39;</span><span class="p">]))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;sku_value&#39;</span><span class="p">,</span> <span class="n">sku_key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;gt;&#39;</span><span class="p">,</span> <span class="s1">&#39; | &#39;</span><span class="p">))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;sku_price&#39;</span><span class="p">,</span> <span class="n">sku_all</span><span class="p">[</span><span class="n">sku_key</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;discountPrice&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">sku_all</span><span class="p">[</span><span class="n">sku_key</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;discountPrice&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">get_collected_values</span><span class="p">(</span><span class="s1">&#39;product_sale_price&#39;</span><span class="p">))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;sku_sale_count&#39;</span><span class="p">,</span>
+                <span class="n">sku_all</span><span class="p">[</span><span class="n">sku_key</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;saleCount&#39;</span><span class="p">))</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+                <span class="s1">&#39;sku_can_book_count&#39;</span><span class="p">,</span>
+                <span class="n">sku_all</span><span class="p">[</span><span class="n">sku_key</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;canBookCount&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_get_img_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="c1"># image info</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div#dt-tab ul &gt; li.tab-trigger&#39;</span><span class="p">):</span>
+            <span class="n">small_url</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div a img::attr(data-lazy-src)&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div a img::attr(data-lazy-src)&#39;</span><span class="p">))</span>
+                <span class="k">else</span> <span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div a img::attr(src)&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">())</span>
+            <span class="n">data_imgs</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;::attr(data-imgs)&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span>
+            <span class="n">data_imgs</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data_imgs</span><span class="p">)</span>
+            <span class="n">mid_url</span> <span class="o">=</span> <span class="n">data_imgs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;preview&#39;</span><span class="p">)</span>
+            <span class="n">big_url</span> <span class="o">=</span> <span class="n">data_imgs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;original&#39;</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_url&#39;</span><span class="p">,</span> <span class="n">small_url</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_url&#39;</span><span class="p">,</span> <span class="n">mid_url</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_url&#39;</span><span class="p">,</span> <span class="n">big_url</span><span class="p">)</span>
+            <span class="c1"># loader.add_value(&#39;image_urls&#39;, big_url)    # for images pipeline</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_size&#39;</span><span class="p">,</span> <span class="n">small_url</span><span class="p">,</span> <span class="n">re</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;\.(\d+[xX]\d+)\.&#39;</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_size&#39;</span><span class="p">,</span> <span class="n">mid_url</span><span class="p">,</span> <span class="n">re</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;\.(\d+[xX]\d+)\.&#39;</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_size&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="c1"># loader.add_value(&#39;status&#39;, &#39;0&#39;)</span>
+            <span class="c1"># loader.add_value(&#39;status&#39;, &#39;0&#39;)</span>
+            <span class="c1"># loader.add_value(&#39;status&#39;, &#39;0&#39;)</span>
+            <span class="k">if</span> <span class="n">small_url</span> <span class="ow">in</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_output_value</span><span class="p">(</span><span class="s1">&#39;product_img_index_url&#39;</span><span class="p">):</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_purpose&#39;</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_purpose&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mid_url</span> <span class="ow">in</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_output_value</span><span class="p">(</span><span class="s1">&#39;product_img_index_url&#39;</span><span class="p">):</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_purpose&#39;</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_purpose&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">big_url</span> <span class="ow">in</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_output_value</span><span class="p">(</span><span class="s1">&#39;product_img_index_url&#39;</span><span class="p">):</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_purpose&#39;</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_purpose&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_description&#39;</span><span class="p">,</span> <span class="s1">&#39;small&#39;</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_description&#39;</span><span class="p">,</span> <span class="s1">&#39;middle&#39;</span><span class="p">)</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;img_description&#39;</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_shop_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="c1"># shop info</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_css</span><span class="p">(</span>
+            <span class="s1">&#39;market_url&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;div.app-smt_supplierInfoSmall div.nameArea a.name::attr(href)&#39;</span><span class="p">,</span>
+            <span class="n">re</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;(http.*\.html?)\??&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_css</span><span class="p">(</span>
+            <span class="s1">&#39;market_name&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;div.app-smt_supplierInfoSmall div.nameArea a.name::attr(title)&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;market_code&#39;</span><span class="p">,</span>
+            <span class="n">loader</span><span class="o">.</span><span class="n">get_collected_values</span><span class="p">(</span><span class="s1">&#39;market_url&#39;</span><span class="p">),</span>
+            <span class="n">re</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;https?://(\w+)\.1688\.com&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span>
+            <span class="s1">&#39;market_id&#39;</span><span class="p">,</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+            <span class="n">re</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;&#39;memberid&#39;\s*:\s*&#39;([-\w]+)&#39;,&quot;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_type&#39;</span><span class="p">,</span> <span class="s1">&#39;shop&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_css</span><span class="p">(</span>
+            <span class="s1">&#39;market_contact_wangwang&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;div.detail div.contactSeller span.wangwang::attr(data-nick)&#39;</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">unquote</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_css</span><span class="p">(</span>
+            <span class="s1">&#39;market_addr&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;div.detail div.address span.disc::text&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_css</span><span class="p">(</span>
+            <span class="s1">&#39;market_exist_time&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;div.content span.year-number::text&#39;</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;market_status&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="A1688Spider.parse_from_index_page"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.a1688.A1688Spider.parse_from_index_page">[docs]</a>    <span class="k">def</span> <span class="nf">parse_from_index_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Index URL: https://www.1688.com/</span>
+
+<span class="sd">        #. Parse category:</span>
+
+<span class="sd">           Category type:</span>
+
+<span class="sd">           - There is category ID.</span>
+
+<span class="sd">             URL: https://fuzhuang.1688.com/nvzhuang</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="A1688Spider.parse_from_search_page"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.a1688.A1688Spider.parse_from_search_page">[docs]</a>    <span class="k">def</span> <span class="nf">parse_from_search_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data_type</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;product&#39;</span><span class="p">:</span>
+            <span class="n">keyword</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://s.1688.com/selloffer/offer_search.htm?keywords=</span><span class="si">%s</span><span class="s1">&#39;</span>
+                   <span class="o">%</span> <span class="n">quote</span><span class="p">(</span><span class="n">keyword</span><span class="p">))</span>
+
+            <span class="n">request</span> <span class="o">=</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+                <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+                <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_searched_product_from_search_result_page</span><span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;item_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;item_num&#39;</span><span class="p">]</span>
+            <span class="n">page_num</span> <span class="o">=</span> <span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page_num&#39;</span><span class="p">)</span> <span class="k">if</span>
+                        <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page_num&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;page_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_num</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_code</span>
+            <span class="k">yield</span> <span class="n">request</span></div>
+
+<div class="viewcode-block" id="A1688Spider.parse_searched_product_from_search_result_page"><a class="viewcode-back" href="../../../api/api.html#ecproduct.spiders.a1688.A1688Spider.parse_searched_product_from_search_result_page">[docs]</a>    <span class="k">def</span> <span class="nf">parse_searched_product_from_search_result_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse the search page to get the product info.</span>
+<span class="sd">        The result page not only include product, but also include shop.</span>
+
+<span class="sd">        :param str keyword: The searched keyword</span>
+<span class="sd">        :param str item_num: Number of item whick will be scraped</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">page_num</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;page_num&#39;</span><span class="p">]</span>
+        <span class="n">item_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;item_num&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;item_num = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item_num</span><span class="p">)</span>
+        <span class="n">item_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;ul#sm-offer-list &gt; li.sm-offer-item&#39;</span><span class="p">):</span>
+            <span class="n">item_url</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">css</span><span class="p">(</span>
+                <span class="s1">&#39;div.sm-offer-photo &gt; a.sm-offer-photoLink::attr(href)&#39;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">item_url</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+                <span class="n">url</span><span class="o">=</span><span class="n">item_url</span><span class="p">,</span>
+                <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_product_from_product_page</span><span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;original_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item_url</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_code</span>
+            <span class="n">item_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">yield</span> <span class="n">request</span>
+
+            <span class="k">if</span> <span class="n">item_num</span> <span class="o">&lt;=</span> <span class="n">item_count</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;last item_count = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item_count</span><span class="p">)</span>
+                <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;item_count = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item_count</span><span class="p">)</span>
+        <span class="n">keyword</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://s.1688.com/selloffer/offer_search.htm&#39;</span>
+               <span class="s1">&#39;?keywords=</span><span class="si">%s</span><span class="s1">#beginPage=</span><span class="si">%s</span><span class="s1">&#39;</span>
+               <span class="o">%</span> <span class="p">(</span><span class="n">quote</span><span class="p">(</span><span class="n">keyword</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">page_num</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_searched_product_from_search_result_page</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;item_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item_num</span> <span class="o">-</span> <span class="n">item_count</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;page_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">page_num</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;product&#39;</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;platform_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform_code</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;keyword&#39;</span><span class="p">]</span>
+        <span class="k">yield</span> <span class="n">request</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, Jim Sun
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

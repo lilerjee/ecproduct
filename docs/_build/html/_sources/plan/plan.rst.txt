@@ -1,0 +1,22 @@
+.. _plan:
+
+Plan of ECProduct
+=================
+
+Schedule of Development
+-----------------------
+
+.. Use the funciton of "Automatically export after saving" of the tool "ToDoList" to get csv data file.
+   Refer to http://www.abstractspoon.com/wiki/doku.php?id=file-action-prefs#autoexrelated_information_under_preferences
+
+   The generated csv file has one more column, and results in one empty column(last column) in table of html page. 
+   This is a bug of this tool.
+
+.. csv-table:: **Schedule of Development**
+   :header-rows: 1
+   :widths: auto
+   :stub-columns: 2
+   :file: ecproduct.csv
+   :delim: U+0009
+   :encoding: utf-16le
+

@@ -1,0 +1,534 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Developer Interface &mdash; ECProduct 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Tools used for ECProduct" href="../tool/tool.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ECProduct
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../design/design.html">Design of Product</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../config.html">Configration of ECProduct</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user/user.html">User Guide of ECProduct</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tool/tool.html">Tools used for ECProduct</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#data-structure">Data Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-ecproduct.spiders.vvic">VVIC Spider API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#spider-api">1688 Spider API</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ECProduct</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Developer Interface</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="developer-interface">
+<span id="api"></span><h1>Developer Interface<a class="headerlink" href="#developer-interface" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="data-structure">
+<h2>Data Structure<a class="headerlink" href="#data-structure" title="Permalink to this headline">¶</a></h2>
+<p><strong>items module data</strong> (<a class="reference internal" href="#module-ecproduct.items" title="ecproduct.items"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ecproduct.items</span></code></a>):</p>
+<blockquote>
+<div><span class="target" id="module-ecproduct.items"></span><p>scraped information definition.
+one item class is mapped to one part of webpage or one table of database or
+one webpage.
+the column name of corresponding table is the same with the filed name of item.
+platform_code and product_id can ensure only one product</p>
+<dl class="simple">
+<dt>status - specify the record status. 0<span class="classifier">created; 1+</span><span class="classifier">updated, -1</span><span class="classifier">deleted.</span></dt><dd><p>the value of ‘updated’ is the number of  update times</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt id="ecproduct.items.Attribute">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.items.</code><code class="sig-name descname">Attribute</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/items.html#Attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.items.Attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>primary_key</cite> defines primary key of table.
+<cite>combination</cite> defines combination relationship between fields</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ecproduct.items.Category">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.items.</code><code class="sig-name descname">Category</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/items.html#Category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.items.Category" title="Permalink to this definition">¶</a></dt>
+<dd><p>货源网站商品品类信息</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ecproduct.items.CategoryPage">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.items.</code><code class="sig-name descname">CategoryPage</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/items.html#CategoryPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.items.CategoryPage" title="Permalink to this definition">¶</a></dt>
+<dd><p>货源网站商品品类页面</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ecproduct.items.ContactPage">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.items.</code><code class="sig-name descname">ContactPage</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/items.html#ContactPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.items.ContactPage" title="Permalink to this definition">¶</a></dt>
+<dd><p>货源网站联系页面</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ecproduct.items.Image">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.items.</code><code class="sig-name descname">Image</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/items.html#Image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.items.Image" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>primary_key</cite> defines primary key of table.
+<cite>combination</cite> defines combination relationship between fields</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ecproduct.items.IndexPage">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.items.</code><code class="sig-name descname">IndexPage</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/items.html#IndexPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.items.IndexPage" title="Permalink to this definition">¶</a></dt>
+<dd><p>货源网站首页</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ecproduct.items.Market">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.items.</code><code class="sig-name descname">Market</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/items.html#Market"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.items.Market" title="Permalink to this definition">¶</a></dt>
+<dd><p>货源网站市场、店铺、站点等商品买卖地址信息</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ecproduct.items.MarketPage">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.items.</code><code class="sig-name descname">MarketPage</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/items.html#MarketPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.items.MarketPage" title="Permalink to this definition">¶</a></dt>
+<dd><p>货源网站市场页面信息</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ecproduct.items.MarketProductPage">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.items.</code><code class="sig-name descname">MarketProductPage</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/items.html#MarketProductPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.items.MarketProductPage" title="Permalink to this definition">¶</a></dt>
+<dd><p>货源网站市场下面商品页面信息</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ecproduct.items.Market_Attr">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.items.</code><code class="sig-name descname">Market_Attr</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/items.html#Market_Attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.items.Market_Attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>货源网站市场属性信息</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ecproduct.items.Product">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.items.</code><code class="sig-name descname">Product</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/items.html#Product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.items.Product" title="Permalink to this definition">¶</a></dt>
+<dd><p>货源网站商品信息
+<cite>primary_key</cite> defines primary key of table.
+<cite>combination</cite> defines combination relationship between fields</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ecproduct.items.ProductPage">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.items.</code><code class="sig-name descname">ProductPage</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/items.html#ProductPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.items.ProductPage" title="Permalink to this definition">¶</a></dt>
+<dd><p>货源网站商品详情页面信息</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ecproduct.items.SearchPage">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.items.</code><code class="sig-name descname">SearchPage</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/items.html#SearchPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.items.SearchPage" title="Permalink to this definition">¶</a></dt>
+<dd><p>货源网站商品查找页面</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ecproduct.items.Seller">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.items.</code><code class="sig-name descname">Seller</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/items.html#Seller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.items.Seller" title="Permalink to this definition">¶</a></dt>
+<dd><p>货源网站卖家信息</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ecproduct.items.Sku">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.items.</code><code class="sig-name descname">Sku</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/items.html#Sku"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.items.Sku" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>primary_key</cite> defines primary key of table.
+<cite>combination</cite> defines combination relationship between fields</p>
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="module-ecproduct.spiders.vvic">
+<span id="vvic-spider-api"></span><h2>VVIC Spider API<a class="headerlink" href="#module-ecproduct.spiders.vvic" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>Market type</strong> of vvic.com:</dt><dd><ol class="arabic simple">
+<li><p><strong>website</strong> - <a class="reference external" href="https://www.vvic.com">https://www.vvic.com</a></p></li>
+<li><p><strong>city</strong> - <a class="reference external" href="https://www.vvic.com/gz">https://www.vvic.com/gz</a></p></li>
+<li><p><strong>mall</strong> - <a class="reference external" href="https://www.vvic.com/gz/shops/19">https://www.vvic.com/gz/shops/19</a></p></li>
+<li><p><strong>floor</strong> - <a class="reference external" href="http://www.vvic.com/hz/shops/516#1">http://www.vvic.com/hz/shops/516#1</a></p></li>
+<li><p><strong>shop</strong> - <a class="reference external" href="https://www.vvic.com/shop/42780">https://www.vvic.com/shop/42780</a></p></li>
+</ol>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="py class">
+<dt id="ecproduct.spiders.vvic.VvicSpider">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.spiders.vvic.</code><code class="sig-name descname">VvicSpider</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/vvic.html#VvicSpider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.vvic.VvicSpider" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="ecproduct.spiders.vvic.VvicSpider.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">entrance_page</span></em>, <em class="sig-param"><span class="n">data_type</span></em>, <em class="sig-param"><span class="n">home_item_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">platform_code</span><span class="o">=</span><span class="default_value">'VC001'</span></em>, <em class="sig-param"><span class="n">keyword</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">item_num</span><span class="o">=</span><span class="default_value">'100'</span></em>, <em class="sig-param"><span class="n">city</span><span class="o">=</span><span class="default_value">'gz'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/vvic.html#VvicSpider.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.vvic.VvicSpider.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>url is str or list, accordingly home_item_id is str or list.</p>
+<dl class="simple">
+<dt>entrance_page:</dt><dd><p>The entrance which spider is in(this is relative with url)</p>
+</dd>
+<dt>data_type:</dt><dd><p>The last infomation type which is will be gotten.
+product, market, category, etc.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ecproduct.spiders.vvic.VvicSpider.parse_from_city_index_page">
+<code class="sig-name descname">parse_from_city_index_page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">response</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/vvic.html#VvicSpider.parse_from_city_index_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.vvic.VvicSpider.parse_from_city_index_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>parse city market index page to get ‘mall’ market
+info(the tab ‘市场’ in web page’)</p>
+<p>city market index e.g.: <a class="reference external" href="http://www.vvic.com/gz">http://www.vvic.com/gz</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ecproduct.spiders.vvic.VvicSpider.parse_from_contact_page">
+<code class="sig-name descname">parse_from_contact_page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">response</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/vvic.html#VvicSpider.parse_from_contact_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.vvic.VvicSpider.parse_from_contact_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the basic info about the website</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ecproduct.spiders.vvic.VvicSpider.parse_from_index_page">
+<code class="sig-name descname">parse_from_index_page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">response</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/vvic.html#VvicSpider.parse_from_index_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.vvic.VvicSpider.parse_from_index_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse website index page to get ‘city’ market info.
+Indext url: <a class="reference external" href="http://www.vvic.com">http://www.vvic.com</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ecproduct.spiders.vvic.VvicSpider.parse_from_mall_index_page">
+<code class="sig-name descname">parse_from_mall_index_page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">response</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/vvic.html#VvicSpider.parse_from_mall_index_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.vvic.VvicSpider.parse_from_mall_index_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>parse mall market index page to get ‘floor’ market info and
+‘shop’ market info
+mall market index e.g.: <a class="reference external" href="http://www.vvic.com/xt/shops/400">http://www.vvic.com/xt/shops/400</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ecproduct.spiders.vvic.VvicSpider.parse_from_market_shop_page">
+<code class="sig-name descname">parse_from_market_shop_page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">response</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/vvic.html#VvicSpider.parse_from_market_shop_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.vvic.VvicSpider.parse_from_market_shop_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse market with product page to get all product info in this market.
+Market ‘shop’ page: <a class="reference external" href="https://www.vvic.com/shop/43929">https://www.vvic.com/shop/43929</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ecproduct.spiders.vvic.VvicSpider.parse_from_market_with_product_page_pagination">
+<code class="sig-name descname">parse_from_market_with_product_page_pagination</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">response</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/vvic.html#VvicSpider.parse_from_market_with_product_page_pagination"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.vvic.VvicSpider.parse_from_market_with_product_page_pagination" title="Permalink to this definition">¶</a></dt>
+<dd><p>parse market with product page to get all product info in this market</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ecproduct.spiders.vvic.VvicSpider.parse_from_search_page">
+<code class="sig-name descname">parse_from_search_page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">response</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/vvic.html#VvicSpider.parse_from_search_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.vvic.VvicSpider.parse_from_search_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>parse search index page to get category info
+entrance url: <a class="reference external" href="http://www.vvic.com/gz/list/index.html">http://www.vvic.com/gz/list/index.html</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ecproduct.spiders.vvic.VvicSpider.parse_from_search_page_with_top_category">
+<code class="sig-name descname">parse_from_search_page_with_top_category</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">response</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/vvic.html#VvicSpider.parse_from_search_page_with_top_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.vvic.VvicSpider.parse_from_search_page_with_top_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>parse top category search page to get category info</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ecproduct.spiders.vvic.VvicSpider.parse_product_from_product_page">
+<code class="sig-name descname">parse_product_from_product_page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">response</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/vvic.html#VvicSpider.parse_product_from_product_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.vvic.VvicSpider.parse_product_from_product_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse product detail page to get product info.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ecproduct.spiders.vvic.VvicSpider.parse_searched_product_from_search_ajax_page">
+<code class="sig-name descname">parse_searched_product_from_search_ajax_page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">response</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/vvic.html#VvicSpider.parse_searched_product_from_search_ajax_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.vvic.VvicSpider.parse_searched_product_from_search_ajax_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the search page to get the product info.
+The result page not only include product, and also include shop.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keyword</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The searched keyword</p></li>
+<li><p><strong>item_num</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Number of item whick will be scraped</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ecproduct.spiders.vvic.VvicSpider.start_requests">
+<code class="sig-name descname">start_requests</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/vvic.html#VvicSpider.start_requests"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.vvic.VvicSpider.start_requests" title="Permalink to this definition">¶</a></dt>
+<dd><p>data_type:
+product, category, market.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="spider-api">
+<h2>1688 Spider API<a class="headerlink" href="#spider-api" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="ecproduct.spiders.a1688.A1688Spider">
+<em class="property">class </em><code class="sig-prename descclassname">ecproduct.spiders.a1688.</code><code class="sig-name descname">A1688Spider</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/a1688.html#A1688Spider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.a1688.A1688Spider" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="ecproduct.spiders.a1688.A1688Spider.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">entrance_page</span></em>, <em class="sig-param"><span class="n">data_type</span></em>, <em class="sig-param"><span class="n">home_item_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">platform_code</span><span class="o">=</span><span class="default_value">'HG058'</span></em>, <em class="sig-param"><span class="n">keyword</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">item_num</span><span class="o">=</span><span class="default_value">'100'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/a1688.html#A1688Spider.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.a1688.A1688Spider.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ecproduct.spiders.a1688.A1688Spider.parse_from_index_page">
+<code class="sig-name descname">parse_from_index_page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">response</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/a1688.html#A1688Spider.parse_from_index_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.a1688.A1688Spider.parse_from_index_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Index URL: <a class="reference external" href="https://www.1688.com/">https://www.1688.com/</a></p>
+<ol class="arabic">
+<li><p>Parse category:</p>
+<p>Category type:</p>
+<ul>
+<li><p>There is category ID.</p>
+<p>URL: <a class="reference external" href="https://fuzhuang.1688.com/nvzhuang">https://fuzhuang.1688.com/nvzhuang</a></p>
+</li>
+</ul>
+</li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ecproduct.spiders.a1688.A1688Spider.parse_from_search_page">
+<code class="sig-name descname">parse_from_search_page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">response</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/a1688.html#A1688Spider.parse_from_search_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.a1688.A1688Spider.parse_from_search_page" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="ecproduct.spiders.a1688.A1688Spider.parse_product_from_product_page">
+<code class="sig-name descname">parse_product_from_product_page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">response</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/a1688.html#A1688Spider.parse_product_from_product_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.a1688.A1688Spider.parse_product_from_product_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse product detail page.</p>
+<ul>
+<li><p>Product URL example:</p>
+<blockquote>
+<div><ul>
+<li><p>Unshelf product:</p>
+<p><a class="reference external" href="https://detail.1688.com/offer/543884257260.html">https://detail.1688.com/offer/543884257260.html</a></p>
+</li>
+<li><p>product which has three price range:</p>
+<p><a class="reference external" href="https://detail.1688.com/offer/544560773525.html">https://detail.1688.com/offer/544560773525.html</a></p>
+</li>
+<li><p>product which has three price and discount price range:</p>
+<p><a class="reference external" href="https://detail.1688.com/offer/539065306832.html">https://detail.1688.com/offer/539065306832.html</a></p>
+</li>
+<li><p>product which has only one price range:</p>
+<p><a class="reference external" href="https://detail.1688.com/offer/40976180711.html">https://detail.1688.com/offer/40976180711.html</a>
+<a class="reference external" href="https://detail.1688.com/offer/543218337857.html">https://detail.1688.com/offer/543218337857.html</a></p>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ecproduct.spiders.a1688.A1688Spider.parse_searched_product_from_search_result_page">
+<code class="sig-name descname">parse_searched_product_from_search_result_page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">response</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ecproduct/spiders/a1688.html#A1688Spider.parse_searched_product_from_search_result_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ecproduct.spiders.a1688.A1688Spider.parse_searched_product_from_search_result_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the search page to get the product info.
+The result page not only include product, but also include shop.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keyword</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The searched keyword</p></li>
+<li><p><strong>item_num</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Number of item whick will be scraped</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../tool/tool.html" class="btn btn-neutral float-left" title="Tools used for ECProduct" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, Jim Sun
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

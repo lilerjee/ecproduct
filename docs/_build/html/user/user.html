@@ -1,0 +1,519 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>User Guide of ECProduct &mdash; ECProduct 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tools used for ECProduct" href="../tool/tool.html" />
+    <link rel="prev" title="Configration of ECProduct" href="../config.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ECProduct
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../design/design.html">Design of Product</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../config.html">Configration of ECProduct</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User Guide of ECProduct</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#structure-of-the-project">Structure of the Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-use-ecproduct">How to use ECProduct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vvic-spider">VVIC Spider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-ecproduct.spiders.a1688">1688 Spider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-ecproduct.spiders.jd">JD Spider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#unit-test-for-spiders">Unit test for spiders</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tool/tool.html">Tools used for ECProduct</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/api.html">Developer Interface</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ECProduct</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>User Guide of ECProduct</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/user/user.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="user-guide-of-ecproduct">
+<span id="user"></span><h1>User Guide of ECProduct<a class="headerlink" href="#user-guide-of-ecproduct" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="structure-of-the-project">
+<h2>Structure of the Project<a class="headerlink" href="#structure-of-the-project" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><dl class="simple">
+<dt><strong>database</strong></dt><dd><p>The database file for storing scraped data into database.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>docs</strong></dt><dd><p>Plan files, Design files, API reference, User guide, etc.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>ecproduct</strong></dt><dd><p>Crawler code.</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><strong>input</strong></dt><dd><div class="line-block">
+<div class="line">Input data for crawler.</div>
+<div class="line">&lt;domain&gt;_url.txt for production environment.</div>
+<div class="line">&lt;domain&gt;_url_text.txt for test environment.</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>log</strong></dt><dd><p>Log files.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>output</strong></dt><dd><p>Output files.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>web</strong></dt><dd><p>Web API, Web management APP.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>main.py</strong></dt><dd><p>Entrance file for crawler.
+Run it for test or production environment.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>scrapy.cfg</strong></dt><dd><p>Scrapy configuration file for this project.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="how-to-use-ecproduct">
+<h2>How to use ECProduct<a class="headerlink" href="#how-to-use-ecproduct" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><dl>
+<dt><strong>Usage</strong></dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$  python main.py -h
+usage: main.py [-h] (-f URL-FILE-TYPE | -u [URL [URL ...]])
+               [-p [HOME_PLATFORM_ITEM_ID [HOME_PLATFORM_ITEM_ID ...]]]
+               [-a NAME=VALUE]
+               spider_name entrance_page_name scrape_data_type
+
+Command line interface for spiders.
+
+positional arguments:
+  spider_name           Platform or spider name(e.g. wsy, vvic, jd, 1688).
+  entrance_page_name    Entrance page name to be scraped(e.g. product, market,
+                        index, search).
+  scrape_data_type      Data type to be scraped(e.g. product, category,
+                        market).
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f URL-FILE-TYPE, --url-file-type URL-FILE-TYPE
+                        Environment name, or URL file type, which will affect
+                        the sourcefile from which the input(e.g. test,
+                        product).
+  -u [URL [URL ...]], --url [URL [URL ...]]
+                        URL to be scraped.If applying this option, ignore
+                        environment argument.
+  -p [HOME_PLATFORM_ITEM_ID [HOME_PLATFORM_ITEM_ID ...]], --home-platform-item-id [HOME_PLATFORM_ITEM_ID [HOME_PLATFORM_ITEM_ID ...]]
+                        Item ID for the product of other platform.It should be
+                        paired with --url argument if present.
+  -a NAME=VALUE         Set spider argument (may be repeated)
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><strong>Get input data from Test Environment File</strong></dt><dd><p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python main.py 1688 product product -f test
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><strong>Get input data from Production Environment File</strong></dt><dd><p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python main.py 1688 product product -f product
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><strong>Get input data from command line</strong></dt><dd><p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python main.py vvic product product -u https://www.vvic.com/item/5669615 https://www.vvic.com/item/3718281
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="vvic-spider">
+<h2>VVIC Spider<a class="headerlink" href="#vvic-spider" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Explanation of VVIC Spider</p>
+<ol class="arabic">
+<li><p>Get <strong>website</strong> info from contact page</p>
+<p><a class="reference internal" href="../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_from_contact_page" title="ecproduct.spiders.vvic.VvicSpider.parse_from_contact_page"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parse_from_contact_page()</span></code></a></p>
+</li>
+<li><p>Get <strong>‘city’ market</strong> info from website index page</p>
+<p><a class="reference internal" href="../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_from_index_page" title="ecproduct.spiders.vvic.VvicSpider.parse_from_index_page"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parse_from_index_page()</span></code></a></p>
+</li>
+<li><p>Get <strong>‘mall’ market</strong> list from city index page</p>
+<p><a class="reference internal" href="../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_from_city_index_page" title="ecproduct.spiders.vvic.VvicSpider.parse_from_city_index_page"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parse_from_city_index_page()</span></code></a></p>
+</li>
+<li><p>Get <strong>‘floor’ market</strong> info and <strong>‘shop’ market</strong> info from mall index page</p>
+<p><a class="reference internal" href="../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_from_mall_index_page" title="ecproduct.spiders.vvic.VvicSpider.parse_from_mall_index_page"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parse_from_mall_index_page()</span></code></a></p>
+</li>
+<li><p>Get <strong>category</strong> info from search index page</p>
+<p><a class="reference internal" href="../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_from_search_page" title="ecproduct.spiders.vvic.VvicSpider.parse_from_search_page"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parse_from_search_page()</span></code></a></p>
+</li>
+<li><p>Get <strong>all product detail</strong> info from shop index page</p>
+<p><a class="reference internal" href="../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_from_market_shop_page" title="ecproduct.spiders.vvic.VvicSpider.parse_from_market_shop_page"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parse_from_market_shop_page()</span></code></a>
+<a class="reference internal" href="../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_from_market_with_product_page_pagination" title="ecproduct.spiders.vvic.VvicSpider.parse_from_market_with_product_page_pagination"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parse_from_market_with_product_page_pagination()</span></code></a></p>
+</li>
+<li><p>Get <strong>one product detail</strong> info from product page</p>
+<p><a class="reference internal" href="../api/api.html#ecproduct.spiders.vvic.VvicSpider.parse_product_from_product_page" title="ecproduct.spiders.vvic.VvicSpider.parse_product_from_product_page"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parse_product_from_product_page()</span></code></a></p>
+</li>
+</ol>
+</li>
+<li><p>Commands to run VVIC Spider:</p>
+<ol class="arabic">
+<li><p>Add right URLs to <cite>input/vvic_url_test.txt</cite> or <cite>input/vvic_url.txt</cite>.</p></li>
+<li><p>Run the following commands.</p>
+<ul>
+<li><p>Get product info from product page:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python main.py vvic product product -f test
+</pre></div>
+</div>
+</li>
+<li><p>Get market info from website index page:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python main.py vvic index market -f test
+</pre></div>
+</div>
+</li>
+<li><p>Get category info from reaserch index page:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python main.py vvic search category -f test
+</pre></div>
+</div>
+</li>
+<li><p>Get all products info of the market from market page:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python main.py vvic market product -f test
+</pre></div>
+</div>
+</li>
+<li><p>Get all products info of the website from website index page:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python main.py vvic index product -f test
+</pre></div>
+</div>
+</li>
+<li><p>Get all products info from search page according to one keyword:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python main.py vvic search product -f test -a keyword=衬衫 -a item_num=100 -a city=gz
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</div>
+<div class="section" id="module-ecproduct.spiders.a1688">
+<span id="spider"></span><h2>1688 Spider<a class="headerlink" href="#module-ecproduct.spiders.a1688" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Commands to run 1688 Spider:</p>
+<ol class="arabic">
+<li><p>Add right URLs to <cite>input/1688_url_test.txt</cite> or <cite>input/1688_url.txt</cite>.</p></li>
+<li><p>Run the following commands.</p>
+<ul>
+<li><p>Get product info from product page:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python main.py 1688 product product -f test
+</pre></div>
+</div>
+</li>
+<li><p>Get market info from website index page:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python main.py 1688 index market -f test
+</pre></div>
+</div>
+</li>
+<li><p>Get category info from reaserch index page:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python main.py 1688 search category -f test
+</pre></div>
+</div>
+</li>
+<li><p>Get all products info of the market from market page:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python main.py 1688 market product -f test
+</pre></div>
+</div>
+</li>
+<li><p>Get all products info of the website from website index page:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python main.py 1688 index product -f test
+</pre></div>
+</div>
+</li>
+<li><p>Get all products info from search page according to one keyword:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python main.py 1688 search product -f test -a keyword=衬衫 -a item_num=100 -a city=gz
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</div>
+<div class="section" id="module-ecproduct.spiders.jd">
+<span id="jd-spider"></span><h2>JD Spider<a class="headerlink" href="#module-ecproduct.spiders.jd" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Commands to run jd Spider:</p>
+<ol class="arabic">
+<li><p>Add right URLs to <cite>input/jd_url_test.txt</cite> or <cite>input/jd_url.txt</cite>.</p></li>
+<li><p>Run the following commands.</p>
+<ul>
+<li><p>Get all products info from search page according to one keyword:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ scrapy crawl jd -a url=https://www.jd.com/allSort.aspx -a entrance_page=category -a data_type=category -o output/jd.jl
+
+$ python main.py jd search product -f test -a keyword=空调
+
+$ python main.py jd search product -f test -a keyword=空调 -a item_num=80
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</div>
+<div class="section" id="unit-test-for-spiders">
+<h2>Unit test for spiders<a class="headerlink" href="#unit-test-for-spiders" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Usage</p>
+<p>Go to the project directory, then run the following command.</p>
+<p>Run all test cases:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m unittest discover tests
+</pre></div>
+</div>
+<p>Run one package’s test cases:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m unittest discover tests\vvic_spider
+</pre></div>
+</div>
+<p>Run one moudle’s test cases:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m unittest tests\vvic_spider\test_parse_from_product_page.py
+</pre></div>
+</div>
+<p>Run one test case:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m unittest tests.vvic_spider.test_parse_from_product_page.test_attr_value_id_exists
+</pre></div>
+</div>
+<p>Run all test cases and output verbose info:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m unittest discover -v tests
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../tool/tool.html" class="btn btn-neutral float-right" title="Tools used for ECProduct" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../config.html" class="btn btn-neutral float-left" title="Configration of ECProduct" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, Jim Sun
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
