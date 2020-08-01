@@ -6,7 +6,7 @@ Welcome to ECProduct's documentation!
 It can get the info of specific product, shop(market), or category from index page, 
 search page, product page, shop page or category page.
 
-Please refer to the directory 'docs'(`<index file ./docs/_build/html/index.html>_`) for more infomation.
+Please refer to the directory 'docs'(`index file <./docs/_build/html/index.html>`_) for more infomation.
 
 Configration of ECProduct
 =========================
