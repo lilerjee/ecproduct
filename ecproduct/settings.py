@@ -59,7 +59,6 @@ MYSQL_HOST = 'localhost'
 MYSQL_USERNAME = 'ecproduct'
 MYSQL_PASSWORD = 'ecproduct@pwd'
 MYSQL_DATABASE = 'ecproduct'
-# MYSQL_DATABASE = 'aims'
 MYSQL_CHARSET = 'utf8'
 
 # Configure a delay for requests for the same website (default: 0)
