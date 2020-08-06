@@ -2,6 +2,7 @@
 from __future__ import print_function
 from __future__ import unicode_literals
 import scrapy
+import re
 #  import random
 #  import base64
 #  from ecproduct.items import ProductPage
@@ -83,6 +84,8 @@ class EcproductSpider(scrapy.Spider):
                 request = scrapy.Request(
                     url=url, callback=self.parse_from_search_page)
             if self.entrance_page == 'market':
+                if 'shop/list/' not in url:
+                    url = re.sub(r'/shop/', r'/shop/list/', url)
                 request = scrapy.Request(
                     url=url, callback=self.parse_from_market_shop_page,
                     errback=self.errback_parse_from_market_with_product_page)

@@ -95,8 +95,8 @@ class VvicSpider(EcproductSpider):
                 % (response.meta['original_url'], response.url))
             loader.add_value('home_item_id', response.meta['home_item_id'])
             loader.add_value('url', self.url.strip())
-            loader.add_value(
-                'product_id', self.url.strip(), lambda v: v[-1], re=r'(\d+)')
+            loader.add_value('product_id', self.url.strip(), lambda v: v[-1],
+                re=r'/item/(\w+)')
             loader.add_value('product_status', 'cannot access')
 
             return loader.load_item()
@@ -111,15 +111,13 @@ class VvicSpider(EcproductSpider):
         if error:
             error_text = error.extract_first().strip()
             if error_text == '查找的商品已删除':
-                loader.add_value(
-                    'product_id', self.url.strip(),
-                    Compose(lambda v: v[-1]), re='(\d+)')
+                loader.add_value('product_id', self.url.strip(),
+                        Compose(lambda v: v[-1]), re='/item/(\w+)')
                 loader.add_value('product_url', self.url.strip())
                 loader.add_value('product_status', 'deleted')
             elif error_text == '找不到页面':
-                loader.add_value(
-                    'product_id', self.url.strip(),
-                    Compose(lambda v: v[-1]), re='(\d+)')
+                loader.add_value('product_id', self.url.strip(),
+                        Compose(lambda v: v[-1]), re='/item/(\w+)')
                 loader.add_value('product_url', self.url.strip())
                 loader.add_value('product_status', 'nonexistent')
             else:
@@ -143,9 +141,8 @@ class VvicSpider(EcproductSpider):
         # product info
         loader.add_value('product_url', self.url.strip())
         # product url '^https?://([A-Za-z0-9\-]+\.)+vvic\.com/item/(\d+)$')
-        loader.add_value(
-            'product_id', self.url.strip(),
-            Compose(lambda v: v[-1]), re='(\d+)')
+        loader.add_value('product_id', self.url.strip(),
+                Compose(lambda v: v[-1]), re='/item/(\w+)')
         loader.add_css(
             'product_name', 'div.product-detail div.d-name strong::text')
         loader.add_css(
@@ -296,9 +293,9 @@ class VvicSpider(EcproductSpider):
         loader.add_value(
             'market_url',
             urljoin(response.meta['original_url'],
-                    str(loader.get_css(
-                        'div.stall-head.fl div.stall-head-name a::attr(href)',
-                        TakeFirst()))))
+                str(loader.get_css(
+                    'div.stall-head.fl div[class*=stall-head-name] a::attr(href)',
+                    TakeFirst()))))
         shop_loader = loader.nested_css('div.shop-info div.shop-content')
         shop_loader.add_css(
             'market_name', 'h2.shop-name span::text', lambda v: v[0].strip())
@@ -327,23 +324,30 @@ class VvicSpider(EcproductSpider):
                 value_list[attr_list.index('旺旺')].xpath(
                     'span[@class="fl"]/text()').extract())
         if '商品' in attr_list:
-            loader.add_value(
-                'market_item_num',
-                value_list[attr_list.index('商品')].xpath(
-                    'text()').re('(\d+)')[0])
+            # the page structure is changed
+            num_class_list = value_list[attr_list.index('商品')].xpath(
+                    './ol/@class').extract()
+            num = ''.join(re.findall(r'v-num num(\d+)', n)[0]
+                for n in num_class_list if re.findall(r'v-num num(\d+)', n))
+            loader.add_value('market_item_num', num)
         if '电话' in attr_list:
-            loader.add_value(
-                'market_contact_phone',
-                value_list[attr_list.index('电话')].xpath(
-                    'p/text()').extract())
+            phone_class_list = value_list[attr_list.index('电话')].xpath('p')
+            phones = [''.join(p.xpath('span[@class]/text()').extract())
+                    for p in phone_class_list]
+            loader.add_value('market_contact_phone', phones)
         if '微信' in attr_list:
             loader.add_value(
                 'market_contact_weixin',
-                value_list[attr_list.index('微信')].xpath('text()').extract())
+                ''.join(value_list[attr_list.index('微信')].xpath(
+                    'span[@class and not(@style)]/text()').extract()))
         if 'QQ' in attr_list:
+            #  loader.add_value(
+            #      'market_contact_qq',
+            #      value_list[attr_list.index('QQ')].xpath('text()').extract())
             loader.add_value(
                 'market_contact_qq',
-                value_list[attr_list.index('QQ')].xpath('text()').extract())
+                ''.join(value_list[attr_list.index('QQ')].xpath(
+                    'span[@class]/text()').extract()))
         if '产地' in attr_list:
             loader.add_value(
                 'market_addr',
@@ -386,8 +390,8 @@ class VvicSpider(EcproductSpider):
             #      "\s*rankFlag=(\d+),\s*name=(\w+),\s*id=(\d+)}",
             #      global_markets_str)
             global_markets = re.findall(
-                r"{panggeFlag=(\d+),\s*code=(\w+),\s*rankFlag=(\d+),"
-                "\s*name=(\w+),\s*id=(\d+),\s*strengthFlag=\d+}",
+                r"panggeFlag=(\d+),\s*code=(\w+),\s*rankFlag=(\d+),"
+                "\s*modelFlag=\d+,\s*name=(\w+),\s*showHot=\d+,\s*id=(\d+),",
                 global_markets_str)
             next_url_list = []
             next_code_list = []
@@ -438,6 +442,7 @@ class VvicSpider(EcproductSpider):
             for (url, mid, code, addr) in zip(
                     next_url_list, next_market_id_list,
                     next_code_list, next_addr_list):
+                self.logger.info('url, mid, code, addr:', url, mid, code, addr)
 
                 request = scrapy.Request(
                     url=url, callback=self.parse_from_city_index_page)
@@ -477,7 +482,7 @@ class VvicSpider(EcproductSpider):
             'td:last-child::text', lambda v: v[0].strip())
         loader.add_css(
             'market_contact_phone',
-            'div.contact-left table:last-child tbody tr:last-child '
+            'div.contact-left table:last-child tbody tr:nth-last-child(2) '
             'td:last-child::text', lambda v: v[0].strip())
 
         loader.add_value(

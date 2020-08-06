@@ -9,6 +9,8 @@
 #https://www.vvic.com/item/5399709
 #https://www.vvic.com/item/5669615
 #https://www.vvic.com/item/4837111
+#https://www.vvic.com/item/5e9c5f5137896e482af0d999
+#https://www.vvic.com/item/5eef0a754fab35000126f5f1
 
 #查找的商品已删除 
 #https://www.vvic.com/item/67307
@@ -16,14 +18,15 @@
 #https://www.vvic.com/item/772834
 
 # search index webpage
-#https://www.vvic.com/gz/list/index.html
+https://www.vvic.com/gz/list/index.html
 
 # website index webpage
 #http://www.vvic.com
 
 # shop url
-https://www.vvic.com/shop/39635
-https://www.vvic.com/shop/18164
+#https://www.vvic.com/shop/39635
+#https://www.vvic.com/shop/18164
+#https://www.vvic.com/shop/15355
 
 # market of market url
 #https://www.vvic.com/gz/shops/19
